@@ -56,26 +56,32 @@ function HTMLFileBody(fileUrl) {
   });
 }
 
+function replaceIncludes() {
+  let includes = document.getElementsByTagName("include");
+  var includeElem = document.getElementsByTagName('include')[document.getElementsByTagName('include').length - 1];
+  includesArray = Array.from(includes);
+  let pairs = []
+  includesArray.forEach((element) => {
+      HTMLFileBody(element.attributes['src'].value)
+      .then(collection => {
+          let HTMLBuffer = collection[0].innerHTML;
+          if (attributeVars = element.getAttribute('vars') && attributeVars != null) {
+              let vars = attributesToKeyValuePairs(attributes);
+              for (const [key, value] of Object.entries(vars)) {
+                  HTMLBuffer = HTMLBuffer.replace("{{ " + key + " }}", value);
+              };
+          } 
+          if (element.getAttribute('outer') == "true") {
+            element.outerHTML = HTMLBuffer;
+          } else {
+            element.innerHTML = HTMLBuffer;
+          }
+      })        
+  });
+}
+
+
+
 window.addEventListener("load", (event) => {
-    let includes = document.getElementsByTagName("include");
-    var includeElem = document.getElementsByTagName('include')[document.getElementsByTagName('include').length - 1];
-    includesArray = Array.from(includes);
-    let pairs = []
-    includesArray.forEach((element) => {
-        HTMLFileBody(element.attributes['src'].value)
-        .then(collection => {
-            let HTMLBuffer = collection[0].innerHTML;
-            if (attributeVars = element.getAttribute('vars') && attributeVars != null) {
-                let vars = attributesToKeyValuePairs(attributes);
-                for (const [key, value] of Object.entries(vars)) {
-                    HTMLBuffer = HTMLBuffer.replace("{{ " + key + " }}", value);
-                };
-            } 
-            if (element.getAttribute('outer') == "true") {
-              element.outerHTML = HTMLBuffer;
-            } else {
-              element.innerHTML = HTMLBuffer;
-            }
-        })        
-    });
+  replaceIncludes();
 });
