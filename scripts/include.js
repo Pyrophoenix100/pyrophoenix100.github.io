@@ -20,7 +20,43 @@
  *      <p> Name: {{ first-name }} {{ last-name }} </p>
  **/
 
-/* Version is V0.02 */
+/* Version is V0.03 */
+/* 
+Changelog: 
+(V0.03): 
+- Added 'outer' attribute to completely remove the include tag.
+- Cleaned up code.
+- Moved some things to functions.
+*/
+/* push = ffe3123e2cbb4d04bd5193bda11684c3 */
+function attributesToKeyValuePairs(attributeString) { 
+ // Split the string into an array of key-value pairs
+  let pairs = string.split(';').map(pair => pair.trim()).filter(pair => pair != "");
+  // Convert the array into a dictionary object
+  let vars = {};
+  pairs.forEach(pair => {
+      let [key, value] = pair.split(':').map(part => part.trim());
+      vars[key] = value;
+  });
+  return vars;
+}
+
+function HTMLFileBody(fileUrl) {
+  return new Promise((resolve, reject) => {
+    fetch(fileUrl)
+      .then(response => response.text())
+      .then(htmlString => {
+        let parser = new DOMParser();
+        let htmlDoc = parser.parseFromString(htmlString, 'text/html');
+        let bodyTag = htmlDoc.getElementsByTagName('*');
+        resolve(bodyTag);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+}
+
 window.addEventListener("load", (event) => {
     let includes = document.getElementsByTagName("include");
     var includeElem = document.getElementsByTagName('include')[document.getElementsByTagName('include').length - 1];
@@ -30,42 +66,17 @@ window.addEventListener("load", (event) => {
         HTMLFileBody(element.attributes['src'].value)
         .then(collection => {
             let HTMLBuffer = collection[0].innerHTML;
-            let attributes = element.getAttribute('vars');
-            if (attributes != null) {
-                // Split the string into an array of key-value pairs
-                let pairs = attributes.split(';').map(pair => pair.trim()).filter(pair => pair != "");
-                console.log(pairs);
-                // Convert the array into a dictionary object
-                let vars = {};
-                pairs.forEach(pair => {
-                    let [key, value] = pair.split(':').map(part => part.trim());
-                    vars[key] = value;
-                });
-                console.log(vars);
+            if (attributeVars = element.getAttribute('vars') && attributeVars != null) {
+                let vars = attributesToKeyValuePairs(attributes);
                 for (const [key, value] of Object.entries(vars)) {
                     HTMLBuffer = HTMLBuffer.replace("{{ " + key + " }}", value);
-                    console.log("{{ " + key + " }}", " = ", value)
                 };
-                console.log(HTMLBuffer)
             } 
-            element.innerHTML = HTMLBuffer;
+            if (element.getAttribute('outer') == "true") {
+              element.outerHTML = HTMLBuffer;
+            } else {
+              element.innerHTML = HTMLBuffer;
+            }
         })        
     });
 });
-
-
- function HTMLFileBody(fileUrl) {
-    return new Promise((resolve, reject) => {
-      fetch(fileUrl)
-        .then(response => response.text())
-        .then(htmlString => {
-          let parser = new DOMParser();
-          let htmlDoc = parser.parseFromString(htmlString, 'text/html');
-          let bodyTag = htmlDoc.getElementsByTagName('*');
-          resolve(bodyTag);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
-  }
