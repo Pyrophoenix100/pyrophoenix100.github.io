@@ -14,9 +14,7 @@ function typingText(delay=100, leader="_") {
     for (let i = 0; i < typedElements.length; i++) {
         const text = typedElements[i].textContent;
         typedElements[i].textContent = "";
-        setTimeout(() => {
-            typeText(typedElements[i], text, delay, leader);
-        }, 100)
+        typeText(typedElements[i], text, delay, leader);
     }
 }
 async function typeText(element, text, delay, leader) {
