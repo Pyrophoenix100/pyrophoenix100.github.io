@@ -1,10 +1,114 @@
 <head>
-    <title>Alec's Projects</title> 
+    <title class="typed">Tuchscherer.Code()</title>
 </head>
-<script src="scripts/include.js"></script>
-<include src="header.html" vars="name: Alec;"></include>
+
+<body>
+    <script src="scripts/include.js"></script>
+    <script src="scripts/bits.js"></script>
+    <include src='header.html'></include>
+    <div id="splash">
+        <h1 id="name" class="typed">Alec Tuchscherer</h1>
+        <div class="container">
+            <div class="column">
+                <h2 class="column-header typed">About Me</h2>
+                <p>
+                    Hi! I'm Alec Tuchscherer, a student in the University of Wisconsin System, studying Computer
+                    Networking & Information Technologies. I have a lot of hobbies, and find more each year. My main
+                    hobby has been a persistant interest in computers, networking, and everything else to do with
+                    technology!
+                </p>
+            </div>
+            <div class="column">
+                <h2 class="column-header typed">What I'm Working On</h2>
+                <p>
+                    This site currently, I hope to use it a lot in the future to document anything I may be doing or 
+                    working on. I'm also planning to add a lot of random content, so this will probably be a testbed
+                    for a few months. Hopefully this also acts as a showcase for some of my skills, and a repository 
+                    of the site in it's current form is available here
+                </p>
+                <include src='assets/components/github-tag.html' vars="
+                repoName: pyrophoenix100.github.io;
+                repoDesc: Personal Projects Website;
+                repoLink: Pyrophoenix100/pyrophoenix100.github.io
+                "></include>
+            </div>
+        </div>
+    </div>
+</body>
 <style>
-    include { 
-        font-size: 10px;
+    p { 
+        color: var(--quarter-light)
+    }
+    #splash {
+        text-align: center;
+        background-image: url('assets/accents/polygon-scatter-haikei.svg');
+        position: relative;
+        top: -40px;
+        width: 100%;
+        height: auto;
+        padding-bottom: 50px;
+    }
+    #name {
+        padding: 70px;
+    }
+    .container {
+        display: flex;
+        justify-content: space-around;
+        background-color: var(--half-dark);
+        position: relative;
+        top: -10px;
+        width: 80%;
+        left: 10%;
+        box-shadow: 2px 2px 5px var(--box-shadow);
+        border-radius: 10px;
+    }
+
+    .column {
+        width: 40%;
+        margin: 10px;
+        text-align: center;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        font-family: 'Consolas', 'Lucida Console';
+        color: var(--half-light);
+    }
+
+    h1 {
+        margin: 30px;
+        color: var(--light);
+    }
+
+    /* Stacked layout for screens up to 768px */
+    @media only screen and (max-width: 768px) {
+        .container {
+            flex-direction: column;
+
+        }
+        .column {
+            width: 100%;
+        }
+
+        #splash {
+            background-image: url("assets/accents/polygon-scatter-haikei-mobile.svg");
+        }
+    }
+
+    /* Styles for both layouts */
+    .column {
+        box-sizing: border-box;
+        padding: 0 1rem;
+        margin-bottom: 2rem;
     }
 </style>
+<script>
+    window.onload = typingText(50);
+</script>

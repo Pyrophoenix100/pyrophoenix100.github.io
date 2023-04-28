@@ -1,0 +1,46 @@
+<body>
+    <div class="github-repo" onclick="window.location.href = 'https://github.com/{{ repoLink }}'">
+        <img src="/assets/logos/github.svg" class="github-icon">
+        <div>
+            <p class="github-subtext">Repo: {{ repoName }}</p>
+            <p class="github-subtext" id="github-description">{{ repoDesc }}</p>
+        </div>
+    </div>
+</body>
+<style>
+    .github-repo {
+        display: flex;
+        margin: 10px;
+        padding: 8px;
+        background-color: var(--half-light);
+        border-radius: 10px;
+        width: max-content;
+        box-shadow: 1px 1px 1px var(--box-shadow);
+        user-select: none;
+        cursor: pointer;
+    }
+    .github-repo:hover {
+        box-shadow: 2px 2px 2px var(--box-shadow);
+    }
+    .github-repo:active {
+        box-shadow: 0px 0px 0px var(--box-shadow);
+
+    }
+    .github-icon {
+        height: 35px;
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .github-subtext {
+        display: hidden;
+        font-size: 10pt;
+        margin: 0px;
+        color: var(--dark);
+    }
+    #github-description {
+        font-size: 8pt;
+    }
+</style>
+<script>
+
+</script>
