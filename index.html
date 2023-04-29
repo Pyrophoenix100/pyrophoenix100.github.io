@@ -1,12 +1,13 @@
 <head>
     <title class="typed">Tuchscherer.Code()</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
 </head>
-
 <body>
     <script src="scripts/include.js"></script>
     <script src="scripts/bits.js"></script>
     <include src='header.html'></include>
     <div id="splash">
+        <div id="splash-fg"></div>
         <h1 id="name" class="typed">Alec Tuchscherer</h1>
         <div class="container">
             <div class="column">
@@ -17,6 +18,11 @@
                     hobby has been a persistant interest in computers, networking, and everything else to do with
                     technology!
                 </p>
+                <include src='assets/components/github-tag.html' vars="
+                repoName: Snippets;
+                repoPath: pyrophoenix100/pyrophoenix100.github.io;
+                repoDesc: My collection of snippets;
+                user: true;"></include>
             </div>
             <div class="column">
                 <h2 class="column-header typed">What I'm Working On</h2>
@@ -24,16 +30,16 @@
                     This site currently, I hope to use it a lot in the future to document anything I may be doing or 
                     working on. I'm also planning to add a lot of random content, so this will probably be a testbed
                     for a few months. Hopefully this also acts as a showcase for some of my skills, and a repository 
-                    of the site in it's current form is available here
+                    of the site in it's current form is available here: <include src='assets/components/mini-github-tag.html' vars="
+                    repoName: pyrophoenix100.github.io;
+                    repoPath: Pyrophoenix100/pyrophoenix100.github.io;
+                    light: true;"
+                    outer='true'></include> 
                 </p>
-                <include src='assets/components/github-tag.html' vars="
-                repoName: pyrophoenix100.github.io;
-                repoDesc: Personal Projects Website;
-                repoLink: Pyrophoenix100/pyrophoenix100.github.io
-                "></include>
             </div>
         </div>
     </div>
+    <div id=></div>
 </body>
 <style>
     p { 
@@ -47,7 +53,26 @@
         width: 100%;
         height: auto;
         padding-bottom: 50px;
+        animation: shift-background 55s linear infinite;
+        background-repeat: repeat;
     }
+    #splash-fg {
+        position: absolute; /* Position the gradient overlay absolutely */
+        top: 0;
+        left: 0;
+        width: 100%; /* Make the overlay fill the container */
+        height: 100%;
+        z-index: 1;
+        background: linear-gradient(to bottom, #00000000 0%, #00000000 70%, var(--half-dark));
+    }
+@keyframes shift-background {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 100vh;
+    }
+}
     #name {
         padding: 70px;
     }
@@ -61,6 +86,7 @@
         left: 10%;
         box-shadow: 2px 2px 5px var(--box-shadow);
         border-radius: 10px;
+        z-index: 2;
     }
 
     .column {
@@ -91,12 +117,10 @@
     @media only screen and (max-width: 768px) {
         .container {
             flex-direction: column;
-
         }
         .column {
             width: 100%;
         }
-
         #splash {
             background-image: url("assets/accents/polygon-scatter-haikei-mobile.svg");
         }

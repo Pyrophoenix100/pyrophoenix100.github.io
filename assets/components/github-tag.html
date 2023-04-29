@@ -1,46 +1,47 @@
-<body>
-    <div class="github-repo" onclick="window.location.href = 'https://github.com/{{ repoLink }}'">
-        <img src="/assets/logos/github.svg" class="github-icon">
+<!--
+    This is a github tag, takes the parameters:
+    repoPath: "username/repoName" should fit into the format https://github.com/{ repoPath }
+    repoName: Name of the repository
+    repoDesc: Description for the repository
+-->
+<body display="inline-block">
+    <div class="github-tag" onclick="window.location.href = 'https://github.com/{{ repoPath }}'">
+        <img src="/assets/logos/github-{? if dark ?}dark{? else ?}light{? endif dark ?}.svg" class="github-tag-icon">
         <div>
-            <p class="github-subtext">Repo: {{ repoName }}</p>
-            <p class="github-subtext" id="github-description">{{ repoDesc }}</p>
+            <p class="github-tag-subtext">Repo: {{ repoName }}</p>
+            <p class="github-tag-subtext" id="github-tag-description">{{ repoDesc }}</p>
         </div>
     </div>
 </body>
 <style>
-    .github-repo {
+    .github-tag {
         display: flex;
         margin: 10px;
         padding: 8px;
-        background-color: var(--half-light);
+        background-color: var(--dark);
         border-radius: 10px;
         width: max-content;
         box-shadow: 1px 1px 1px var(--box-shadow);
         user-select: none;
         cursor: pointer;
     }
-    .github-repo:hover {
-        box-shadow: 2px 2px 2px var(--box-shadow);
+    .github-tag:hover {
+        box-shadow: 1px 1px 3px var(--box-shadow);
     }
-    .github-repo:active {
+    .github-tag:active {
         box-shadow: 0px 0px 0px var(--box-shadow);
-
     }
-    .github-icon {
+    .github-tag-icon {
         height: 35px;
         display: inline-block;
         margin-right: 10px;
     }
-    .github-subtext {
-        display: hidden;
+    .github-tag-subtext {
         font-size: 10pt;
         margin: 0px;
-        color: var(--dark);
+        color: var(--light);
     }
-    #github-description {
+    #github-tag-description {
         font-size: 8pt;
     }
 </style>
-<script>
-
-</script>
