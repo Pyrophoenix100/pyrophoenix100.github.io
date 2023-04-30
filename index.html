@@ -12,7 +12,7 @@
         <div class="container">
             <div class="column">
                 <h2 class="column-header typed">About Me</h2>
-                <p>
+                <p class="body-text">
                     Hi! I'm Alec Tuchscherer, a student in the University of Wisconsin System, studying Computer
                     Networking & Information Technologies. I have a lot of hobbies, and find more each year. My main
                     hobby has been a persistant interest in computers, networking, and everything else to do with
@@ -21,12 +21,11 @@
                 <include src='assets/components/github-tag.html' vars="
                 repoName: Snippets;
                 repoPath: pyrophoenix100/pyrophoenix100.github.io;
-                repoDesc: My collection of snippets;
-                user: true;"></include>
+                repoDesc: My collection of snippets;"></include>
             </div>
             <div class="column">
                 <h2 class="column-header typed">What I'm Working On</h2>
-                <p>
+                <p class="body-text">
                     This site currently, I hope to use it a lot in the future to document anything I may be doing or 
                     working on. I'm also planning to add a lot of random content, so this will probably be a testbed
                     for a few months. Hopefully this also acts as a showcase for some of my skills, and a repository 
@@ -35,15 +34,22 @@
                     repoPath: Pyrophoenix100/pyrophoenix100.github.io;
                     light: true;"
                     outer='true'></include> 
+                    <include src="assets/components/mini-github-tag.html" vars="
+                    repoName: Snippets;
+                    repoPath: pyrophoenix100/Snippets;"
                 </p>
             </div>
         </div>
     </div>
     <div id=></div>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/7oJ_pIaSRtQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </body>
 <style>
     p { 
         color: var(--quarter-light)
+    }
+    .body-text {
+        
     }
     #splash {
         text-align: center;
@@ -134,5 +140,5 @@
     }
 </style>
 <script>
-    window.onload = typingText(50);
+    window.onload = setTimeout(() => {typingText(50)}, 400);
 </script>

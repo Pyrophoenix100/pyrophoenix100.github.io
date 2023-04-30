@@ -28,3 +28,13 @@ async function typeText(element, text, delay, leader) {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+function typeThis() {
+    console.log(this)
+    const typedElements = this;
+    for (let i = 0; i < typedElements.length; i++) {
+        const text = typedElements[i].textContent;
+        typedElements[i].textContent = "";
+        typeText(typedElements[i], text, delay, leader);
+    }
+}

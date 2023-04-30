@@ -199,6 +199,6 @@ function attributesToVars(attributeString) {
    });
  }
  
- window.addEventListener("load", (event) => {
+ window.addEventListener("DOMContentLoaded", (event) => {
    replaceIncludes();
  });

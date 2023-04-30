@@ -3,6 +3,14 @@
     repoPath: "username/repoName" should fit into the format https://github.com/{ repoPath }
     repoName: Name of the repository
     repoDesc: Description for the repository
+
+    @usage
+    <include src='assets/components/github-tag.html' vars="
+        repoName: Snippets;
+        repoPath: pyrophoenix100/pyrophoenix100.github.io;
+        repoDesc: My collection of snippets;
+        user: true;">
+    </include>
 -->
 <body display="inline-block">
     <div class="github-tag" onclick="window.location.href = 'https://github.com/{{ repoPath }}'">
