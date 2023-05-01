@@ -3,38 +3,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 </head>
 
-<script>
-    window.addEventListener('DOMContentLoaded', () => {
-        let promise = new Promise((resolve, reject) => {
-            fetch("/markdown" + window.location.href)
-              .then((response) => {
-                if (response.status == 404) {
-                    throw new Error("404: Not Found");
-                } else {
-                    return response.text()
-                }
-              })
-              .then(markdownText => {
-                var body = document.getElementsByTagName("markdown")[0];
-                var converter = new showdown.Converter({metadata: true});
-                var text = markdownText;
-                body.innerHTML = converter.makeHtml(text);
-                meta = converter.getMetadata();
-                headerText = document.getElementById("headerText");
-                splashImg = document.getElementById("splash-img");
-                if (typeof(meta.splashImage) != 'undefined') {
-                    splashImg.src = "markdown/" + window.location.pathname.replace(/[^\/]*$/, "") + meta.splashImage;
-                    console.log(splashImage.src)
-                }
-                if (typeof(meta.splashImage) != 'undefined') {
-                    headerText.innerHTML = meta.title;
-                }
-              })
-              .finally(a => document.body.style.display = "block");
-        });
-    });
-</script>
-
 <body>
     <script src="scripts/include.js"></script>
     <script src="scripts/bits.js"></script>
@@ -46,17 +14,14 @@
     <h1 id="headerText" class="typed">404: Page Not Found</h1>
     <div id="body-div">
         <img id="splash-img">
-        <div id="body-text">
-            <markdown><p style="margin-bottom: 0px;">I dunno. It's just not here. Go back.</p></markdown>
-        </div>
+        <p id="body-text">
+            I dunno. It's just not here. Go back.
+        </p>
     </div>
 </body>
 <style>
-    body {
-        display: none;
-    }
     markdown {
-        width: 90%;
+        width: auto;
         margin: 2%;
         color: var(--half-light) !important;
         margin-top: 0px;
@@ -66,13 +31,6 @@
         min-width: 10px;
         width: auto;
         margin-right: auto;
-    }
-    markdown h1 {
-        text-align: center;
-    }
-    markdown h2~p {
-        text-indent: 2em;
-        margin-left: 2em;
     }
     #splash-img { 
         width: 100%;
@@ -111,6 +69,7 @@
         }
     }
     #body-div {
+        padding-bottom: 10px;
         background-color: var(--dark);
         position: relative;
         top: -10px;
@@ -134,7 +93,5 @@
     }
 </style>
 <script>
-    window.onload = () => {
-        setTimeout(() => {typingText(50)}, 400);
-    }
+    window.onload = setTimeout(() => {typingText(50)}, 400);
 </script>

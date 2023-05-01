@@ -1,7 +1,7 @@
 <script src="scripts/include.js"></script>
 <script src="scripts/bits.js"></script>
 <div id='header'>
-    <p id="header-text" class="typed">Tuchscherer.Code()</p>
+    <p id="header-text" class="typed" onclick="window.location.href = '/'">Tuchscherer.Code()</p>
     <ul id="header-menu">
         <li id="projects" class="header-menu-item" onclick="window.location.href = 'projects.html'">
             <img class="header-menu-item-icon" src="assets/logos/laptop-code.svg"></img>
@@ -21,6 +21,9 @@
 </div>
 
 <style>
+    *[onclick] {
+        cursor: pointer;
+    }
     #header-menu {
         list-style-type: none;
         margin: 0;
@@ -37,9 +40,7 @@
         color: var(--half-light);
         margin: 5px 10px 5px 10px;
         border-bottom: 2px solid #00000000;
-        border-top: 2px solid #00000000;
         user-select: none;
-        cursor: pointer;
     }
 
     .header-menu-item h4 {
@@ -56,7 +57,9 @@
         transition: border-bottom 0.2s;
     }
     .header-menu-item-icon {
-        height: 30px;
+        position: relative;
+        top: 0.5px;
+        height: 1.1em;
         src: url('assets/logos/laptop-code-nohover.svg');
     } 
 
@@ -64,6 +67,7 @@
         --box-shadow: #202020;
         --dark: #2E2E2E;
         --half-dark: #3f3f3f;
+        --quarter-dark: #4b4a4d;
         --accent-dull: #7a50ad;
         --quarter-light: #8e8992;
         --half-light: #a9a3ad;
@@ -73,7 +77,6 @@
 
     * { 
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #000505;
     }
 
     body {
@@ -98,7 +101,22 @@
     #header-text {
         color: var(--half-light);
         font-size: larger;
+        font-variant: small-caps;
         font-family: 'Consolas', 'Lucida Console';
         line-height: 5px;
+    }
+    .body-text {
+        line-height: 1.75;
+    }
+    p { 
+        color: var(--quarter-light)
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        font-family: 'Consolas', 'Lucida Console';
+        color: var(--half-light);
     }
 </style> 
