@@ -1,5 +1,5 @@
 title: This.Document; subTitle: A Personal Github Pages site; splashImage: splash.png;
-muda: muda;
+muda: muda; ora: ora;
 ### ENDMETADATA ###
 
 # The Website
