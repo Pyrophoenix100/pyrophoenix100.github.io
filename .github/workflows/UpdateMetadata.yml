@@ -5,7 +5,7 @@
 # as well as all necessary repo and token information. I recommend using 
 # fine-grained access tokens, as they allow you to grant r/w access to one
 # repo only, so there is no risk to your other repos.
-name: Sync file between Repositories
+name: Update metadata.json
 on:
   push:
     branches: [ main ]
@@ -41,6 +41,11 @@ jobs:
             });
             metadataIndex[file] = metadata;
           }
-
+          core.warning(process.env.GITHUB_WORKSPACE)
+          fs.readdir(testFolder, (err, files) => {
+            files.forEach(file => {
+              core.warning(file);
+            });
+          });
           const indexFilePath = path.join(process.env.GITHUB_WORKSPACE, 'markdown', 'metadata.json');
           fs.writeFileSync(indexFilePath, JSON.stringify(metadataIndex, null, 2));
