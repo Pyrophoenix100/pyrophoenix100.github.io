@@ -13,11 +13,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
     - name: Get list of markdown files
       id: files
       run: |
         echo "::set-output name=files::$(find . -type f -name 'markdown.txt')"
-
     - name: Generate metadata index
       uses: actions/github-script@v5
       with:
