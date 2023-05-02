@@ -6,20 +6,9 @@
 <script>
     path = window.location.pathname;
     console.log(path)
-    function attributesToVars(attributeString) { 
-    // Split the string into an array of key-value pairs
-        let pairs = attributeString.split(';').map(pair => pair.trim()).filter(pair => pair != "");
-        // Convert the array into a dictionary object
-        let vars = {};
-        pairs.forEach(pair => {
-            let [key, value] = pair.split(':').map(part => part.trim());
-            vars[key] = value;
-        });
-        return vars;
-    }      
-    window.addEventListener('DOMContentLoaded', () => {
+    function loadPath(ass) {
         let promise = new Promise((resolve, reject) => {
-            fetch("/markdown" + path + ".txt")
+            fetch("/markdown" + ass + "/markdown.txt")
               .then((response) => {
                 if (response.status != 404) {
                     return response.text()
@@ -40,7 +29,50 @@
                 console.log(meta.splashImage)
                 console.log(meta.title)
                 if (typeof(meta.splashImage) != 'undefined') {
-                    splashImg.src = "/markdown" + path.replace(/[^\/]*$/, "") + meta.splashImage;
+                    splashImg.src = "/markdown" + path + "/" + meta.splashImage;
+                }
+                if (typeof(meta.title) != 'undefined') {
+                    headerText.innerHTML = meta.title;
+                }
+              })
+              .finally(a => document.body.style.display = "block");
+        });
+    }
+    function attributesToVars(attributeString) { 
+    // Split the string into an array of key-value pairs
+        let pairs = attributeString.split(';').map(pair => pair.trim()).filter(pair => pair != "");
+        // Convert the array into a dictionary object
+        let vars = {};
+        pairs.forEach(pair => {
+            let [key, value] = pair.split(':').map(part => part.trim());
+            vars[key] = value;
+        });
+        return vars;
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+        let promise = new Promise((resolve, reject) => {
+            fetch("/markdown" + path + "/markdown.txt")
+              .then((response) => {
+                if (response.status != 404) {
+                    return response.text()
+                } else {
+                    throw new Error("404: Not Found")
+                }
+              })
+              .then(markdownText => {
+                var body = document.getElementsByTagName("markdown")[0];
+                var converter = new showdown.Converter();
+                var text = markdownText;
+                [metadata, markdown] = text.split("### ENDMETADATA ###")
+                body.innerHTML = converter.makeHtml(markdown);
+                meta = attributesToVars(metadata)
+                headerText = document.getElementById("headerText");
+                splashImg = document.getElementById("splash-img");
+                console.log(meta)
+                console.log(meta.splashImage)
+                console.log(meta.title)
+                if (typeof(meta.splashImage) != 'undefined') {
+                    splashImg.src = "/markdown" + path + "/" + meta.splashImage;
                 }
                 if (typeof(meta.title) != 'undefined') {
                     headerText.innerHTML = meta.title;
@@ -52,10 +84,10 @@
 </script>
 
 <body>
-    <script src="https://pages.tuchscherer.xyz/scripts/include.js"></script>
-    <script src="https://pages.tuchscherer.xyz/scripts/bits.js"></script>
+    <script src="/scripts/include.js"></script>
+    <script src="/scripts/bits.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
-    <include src='https://pages.tuchscherer.xyz/header.html'></include>
+    <include src='/header.html'></include>
     <div id="accent">
         <div id="accent-fg"></div>
     </div>
