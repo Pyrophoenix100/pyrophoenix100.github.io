@@ -2,7 +2,9 @@ name: Update metadata.json
 on:
   push:
     branches: [ main ]
-    paths: '**/markdown.txt'
+    paths: 
+      -'**/markdown.txt'
+      -'.github/workflows/UpdateMetadata.yml'
 env:
   repoOwner: 'pyrophoenix100'
   repoName: 'pyrophoenix100.github.io'
