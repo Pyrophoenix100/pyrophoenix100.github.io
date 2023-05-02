@@ -9,11 +9,7 @@
         let promise = new Promise((resolve, reject) => {
             fetch("/markdown" + path)
               .then((response) => {
-                if (response.status == 404) {
-                    throw new Error("404: Not Found");
-                } else {
-                    return response.text()
-                }
+                return response.text()
               })
               .then(markdownText => {
                 var body = document.getElementsByTagName("markdown")[0];
@@ -36,10 +32,10 @@
 </script>
 
 <body>
-    <script src="/scripts/include.js"></script>
-    <script src="/scripts/bits.js"></script>
+    <script src="https://pages.tuchscherer.xyz/scripts/include.js"></script>
+    <script src="https://pages.tuchscherer.xyz/scripts/bits.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
-    <include src='header.html'></include>
+    <include src='https://pages.tuchscherer.xyz/header.html'></include>
     <div id="accent">
         <div id="accent-fg"></div>
     </div>
