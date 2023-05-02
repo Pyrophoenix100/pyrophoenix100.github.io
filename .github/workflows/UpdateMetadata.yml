@@ -25,7 +25,7 @@ jobs:
           const fs = require('fs');
           const path = require('path');
           const files = "${{ steps.files.outputs.files }}".split("\n").map(f => f.trim()).filter(f => f !== "");
-          const metadataIndex = {};
+          let metadataIndex = {};
           for (const file of files) {
             const content = fs.readFileSync(file, 'utf8');
             const metadata = {};
