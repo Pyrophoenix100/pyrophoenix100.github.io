@@ -1,4 +1,4 @@
-title: This.Document; subTitle: A Personal Github Pages site; splashImage: splash.png; test: mark;
+title: This.Document; subTitle: A Personal Github Pages site; splashImage: splash.png;
 ### ENDMETADATA ###
 
 # The Website
