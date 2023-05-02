@@ -1,6 +1,5 @@
 title: Spicy McCrispy;
 subTitle: Recipe Replication;
 splashImage: splash.jpg;
-Muda: Muda;
 ### ENDMETADATA ###
 # Spicy McCrispy Sandwich
