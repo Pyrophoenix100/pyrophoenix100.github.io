@@ -1,8 +1,6 @@
 title: Spicy McCrispy;
 subTitle: Recipe Replication;
 splashImage: splash.jpg;
-fakeMetadata: Useless;
-Why: God?;
 Muda: Muda;
 ### ENDMETADATA ###
 # Spicy McCrispy Sandwich
