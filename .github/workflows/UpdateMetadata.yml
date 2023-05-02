@@ -28,7 +28,7 @@ jobs:
         script: |
           const fs = require('fs');
           const path = require('path');
-          const files = "${{ steps.files.outputs.files }}".split("\n").map(f => f.trim()).filter(f => f !== "");
+          const files = "${{ steps.files.outputs.files }}".split("%0A").map(f => f.trim()).filter(f => f !== "");
           let metadataIndex = {};
           for (let file of files) {
             const content = fs.readFileSync(file, 'utf8');
