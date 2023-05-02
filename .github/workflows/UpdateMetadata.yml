@@ -1,10 +1,3 @@
-# This workflow syncronizes a file between this workflow's repository and 
-# a remote repository. It only works one way, IE changes made in the remote 
-# repo to the file will be overwritten the next time the workflow repo's copy 
-# is changed. You will need to define the local and remote file in the script
-# as well as all necessary repo and token information. I recommend using 
-# fine-grained access tokens, as they allow you to grant r/w access to one
-# repo only, so there is no risk to your other repos.
 name: Update metadata.json
 on:
   push:
@@ -18,7 +11,8 @@ jobs:
     - name: Get list of markdown files
       id: files
       run: |
-        echo "::set-output name=files::$(find . -type f -name 'markdown.txt')"
+        echo "files=$(find . -type f -name 'markdown.txt') >> $GITHUB_OUTPUT"
+
     - name: Generate metadata index
       uses: actions/github-script@v5
       with:
