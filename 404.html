@@ -19,6 +19,7 @@
                 meta = converter.getMetadata();
                 headerText = document.getElementById("headerText");
                 splashImg = document.getElementById("splash-img");
+                console.log(meta)
                 if (typeof(meta.splashImage) != 'undefined') {
                     splashImg.src = "markdown/" + path.replace(/[^\/]*$/, "") + meta.splashImage;
                 }
