@@ -4,7 +4,6 @@ on:
     branches: [ main ]
     paths: 
       -'**/markdown.txt'
-      -'.github/workflows/UpdateMetadata.yml'
 env:
   repoOwner: 'pyrophoenix100'
   repoName: 'pyrophoenix100.github.io'
@@ -28,9 +27,9 @@ jobs:
           const path = require('path');
           const files = "${{ steps.files.outputs.files }}".split("\n").map(f => f.trim()).filter(f => f !== "");
           let metadataIndex = {};
-          for (const file of files) {
+          for (let file of files) {
             const content = fs.readFileSync(file, 'utf8');
-            const metadata = {};
+            let metadata = {};
             metadataText = content.split("### ENDMETADATA ###")[0];
             let pairs = metadataText.split(';').map(pair => pair.trim()).filter(pair => pair != "");
             pairs.forEach(pair => {
