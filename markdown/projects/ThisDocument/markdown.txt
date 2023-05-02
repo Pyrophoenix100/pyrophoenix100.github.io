@@ -1,5 +1,4 @@
-title: This.Document; subTitle: A Personal Github Pages site; splashImage: splash.png; update: text;
-
+title: This.Document; subTitle: A Personal Github Pages site; splashImage: splash.png;
 # The Website
 
 ## Why
