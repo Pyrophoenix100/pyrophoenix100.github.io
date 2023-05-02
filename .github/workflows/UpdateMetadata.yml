@@ -2,7 +2,7 @@ name: Update metadata.json
 on:
   push:
     paths: 
-      - '**/markdown.txt'
+      - 'markdown/**'
 env:
   repoOwner: 'pyrophoenix100'
   repoName: 'pyrophoenix100.github.io'
