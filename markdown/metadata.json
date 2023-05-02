@@ -1,3 +1,8 @@
 {
-  "./README.md": {}
+  "./markdown/projects/ThisDocument/markdown.txt": {
+    "title": "This.Document",
+    "subTitle": "A Personal Github Pages site",
+    "splashImage": "splash.png",
+    "beep": "boop"
+  }
 }
