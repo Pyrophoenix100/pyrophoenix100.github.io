@@ -20,6 +20,8 @@
                 headerText = document.getElementById("headerText");
                 splashImg = document.getElementById("splash-img");
                 console.log(meta)
+                console.log(meta.splashImage)
+                console.log(meta.title)
                 if (typeof(meta.splashImage) != 'undefined') {
                     splashImg.src = "markdown/" + path.replace(/[^\/]*$/, "") + meta.splashImage;
                 }
