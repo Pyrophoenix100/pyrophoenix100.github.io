@@ -4,7 +4,8 @@
 </head>
 
 <script>
-    path = "/projects/ThisDocument/website.txt";
+    path = window.location.pathname;
+    console.log(path)
     function attributesToVars(attributeString) { 
     // Split the string into an array of key-value pairs
         let pairs = attributeString.split(';').map(pair => pair.trim()).filter(pair => pair != "");
@@ -18,7 +19,7 @@
     }      
     window.addEventListener('DOMContentLoaded', () => {
         let promise = new Promise((resolve, reject) => {
-            fetch("/markdown" + path)
+            fetch("/markdown" + path + ".txt")
               .then((response) => {
                 return response.text()
               })
