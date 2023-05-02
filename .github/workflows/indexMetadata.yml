@@ -1,0 +1,46 @@
+# This workflow syncronizes a file between this workflow's repository and 
+# a remote repository. It only works one way, IE changes made in the remote 
+# repo to the file will be overwritten the next time the workflow repo's copy 
+# is changed. You will need to define the local and remote file in the script
+# as well as all necessary repo and token information. I recommend using 
+# fine-grained access tokens, as they allow you to grant r/w access to one
+# repo only, so there is no risk to your other repos.
+name: Sync file between Repositories
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get list of markdown files
+      id: files
+      run: |
+        echo "::set-output name=files::$(find . -type f -name 'markdown.txt')"
+
+    - name: Generate metadata index
+      uses: actions/github-script@v5
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+
+          const files = "${{ steps.files.outputs.files }}".split("\n").map(f => f.trim()).filter(f => f !== "");
+
+          const metadataIndex = {};
+
+          for (const file of files) {
+            const content = fs.readFileSync(file, 'utf8');
+            const metadata = {};
+            metadataText = content.split("### ENDMETADATA ###")[0];
+            let pairs = metadataText.split(';').map(pair => pair.trim()).filter(pair => pair != "");
+            pairs.forEach(pair => {
+                let [key, value] = pair.split(':').map(part => part.trim());
+                metadata[key] = value;
+            });
+            metadataIndex[file] = metadata;
+          }
+
+          const indexFilePath = path.join(process.env.GITHUB_WORKSPACE, 'markdown', 'metadata.json');
+          fs.writeFileSync(indexFilePath, JSON.stringify(metadataIndex, null, 2));
