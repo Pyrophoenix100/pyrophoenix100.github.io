@@ -21,7 +21,11 @@
         let promise = new Promise((resolve, reject) => {
             fetch("/markdown" + path + ".txt")
               .then((response) => {
-                return response.text()
+                if (response.status != 404) {
+                    return response.text()
+                } else {
+                    throw new Error("404: Not Found")
+                }
               })
               .then(markdownText => {
                 var body = document.getElementsByTagName("markdown")[0];
