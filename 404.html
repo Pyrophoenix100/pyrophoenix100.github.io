@@ -4,26 +4,38 @@
 </head>
 
 <script>
-    path = "/projects/ThisDocument/website";
+    path = "/projects/ThisDocument/website.txt";
+    function attributesToVars(attributeString) { 
+    // Split the string into an array of key-value pairs
+        let pairs = attributeString.split(';').map(pair => pair.trim()).filter(pair => pair != "");
+        // Convert the array into a dictionary object
+        let vars = {};
+        pairs.forEach(pair => {
+            let [key, value] = pair.split(':').map(part => part.trim());
+            vars[key] = value;
+        });
+        return vars;
+    }      
     window.addEventListener('DOMContentLoaded', () => {
         let promise = new Promise((resolve, reject) => {
-            fetch("https://pages.tuchscherer.xyz/markdown" + path)
+            fetch("/markdown" + path)
               .then((response) => {
                 return response.text()
               })
               .then(markdownText => {
                 var body = document.getElementsByTagName("markdown")[0];
-                var converter = new showdown.Converter({metadata: true});
+                var converter = new showdown.Converter();
                 var text = markdownText;
-                body.innerHTML = converter.makeHtml(text);
-                meta = converter.getMetadata();
+                [metadata, markdown] = text.split("### ENDMETADATA ###")
+                body.innerHTML = converter.makeHtml(markdown);
+                meta = attributesToVars(metadata)
                 headerText = document.getElementById("headerText");
                 splashImg = document.getElementById("splash-img");
                 console.log(meta)
                 console.log(meta.splashImage)
                 console.log(meta.title)
                 if (typeof(meta.splashImage) != 'undefined') {
-                    splashImg.src = "markdown/" + path.replace(/[^\/]*$/, "") + meta.splashImage;
+                    splashImg.src = "/markdown" + path.replace(/[^\/]*$/, "") + meta.splashImage;
                 }
                 if (typeof(meta.title) != 'undefined') {
                     headerText.innerHTML = meta.title;
