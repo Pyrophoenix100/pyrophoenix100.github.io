@@ -3,7 +3,6 @@ on:
   push:
     paths: 
       -'**/markdown.txt'
-      -'**/UpdateMetadata.yml'
 env:
   repoOwner: 'pyrophoenix100'
   repoName: 'pyrophoenix100.github.io'
