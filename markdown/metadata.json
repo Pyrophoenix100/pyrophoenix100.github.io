@@ -1,8 +1,13 @@
 {
-  "./markdown/projects/ThisDocument/markdown.txt": {
+  "markdown/projects/ThisDocument/markdown.txt": {
     "title": "This.Document",
     "subTitle": "A Personal Github Pages site",
-    "splashImage": "splash.png",
-    "beep": "boop"
+    "splashImage": "splash.png"
+  },
+  "markdown/cooking/SpicyMcCrispy/markdown.txt": {
+    "title": "Spicy McCrispy",
+    "subTitle": "Recipe Replication",
+    "splashImage": "splash.jpg",
+    "down": "stuff"
   }
 }
