@@ -4,10 +4,10 @@
 </head>
 
 <script>
-    path = window.location.pathname;
+    path = "/projects/ThisDocument/website";
     window.addEventListener('DOMContentLoaded', () => {
         let promise = new Promise((resolve, reject) => {
-            fetch("/markdown" + path)
+            fetch("https://pages.tuchscherer.xyz/markdown" + path)
               .then((response) => {
                 return response.text()
               })
