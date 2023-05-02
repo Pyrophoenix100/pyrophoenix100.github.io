@@ -9,7 +9,7 @@ env:
   repoName: 'pyrophoenix100.github.io'
   path: 'markdown/metadata.json'
 jobs:
-  build:
+  update_metadata_index:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
