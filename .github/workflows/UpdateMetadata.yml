@@ -42,7 +42,7 @@ jobs:
             metadataIndex[file] = metadata;
           }
           core.warning(process.env.GITHUB_WORKSPACE)
-          fs.readdir(testFolder, (err, files) => {
+          fs.readdir(process.env.GITHUB_WORKSPACE, (err, files) => {
             files.forEach(file => {
               core.warning(file);
             });
