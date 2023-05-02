@@ -16,7 +16,7 @@ jobs:
     - name: Get list of markdown files
       id: files
       run: |
-        echo "files=$(find markdown/ -type f -name 'markdown.txt')" >> $GITHUB_OUTPUT
+        echo "files='$(find markdown/ -type f -name 'markdown.txt')'" >> $GITHUB_OUTPUT
     - name: Generate metadata index
       uses: actions/github-script@v5
       with:
