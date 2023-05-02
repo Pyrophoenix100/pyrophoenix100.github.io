@@ -35,6 +35,7 @@ jobs:
                 let [key, value] = pair.split(':').map(part => part.trim());
                 metadata[key] = value;
             });
+            core.warning(metadata)
             metadataIndex[file] = metadata;
           }
           const indexFilePath = path.join(process.env.GITHUB_WORKSPACE, 'markdown', 'metadata.json');
