@@ -4,9 +4,10 @@
 </head>
 
 <script>
+    path = window.location.pathname;
     window.addEventListener('DOMContentLoaded', () => {
         let promise = new Promise((resolve, reject) => {
-            fetch("/markdown" + window.location.href)
+            fetch("/markdown" + path)
               .then((response) => {
                 if (response.status == 404) {
                     throw new Error("404: Not Found");
@@ -23,10 +24,9 @@
                 headerText = document.getElementById("headerText");
                 splashImg = document.getElementById("splash-img");
                 if (typeof(meta.splashImage) != 'undefined') {
-                    splashImg.src = "markdown/" + window.location.pathname.replace(/[^\/]*$/, "") + meta.splashImage;
-                    console.log(splashImage.src)
+                    splashImg.src = "markdown/" + path.replace(/[^\/]*$/, "") + meta.splashImage;
                 }
-                if (typeof(meta.splashImage) != 'undefined') {
+                if (typeof(meta.title) != 'undefined') {
                     headerText.innerHTML = meta.title;
                 }
               })
@@ -68,7 +68,10 @@
         margin-right: auto;
     }
     markdown h1 {
-        text-align: center;
+        text-align: left;
+    }
+    markdown h1~* {
+        text-indent: 2em !important;
     }
     markdown h2~p {
         text-indent: 2em;
