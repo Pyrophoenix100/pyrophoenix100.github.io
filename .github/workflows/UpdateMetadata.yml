@@ -12,10 +12,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
     - name: Get list of markdown files
       id: files
       run: |
         echo "files=$(find . -type f -name 'markdown.txt') >> $GITHUB_OUTPUT"
+
     - name: Generate metadata index
       uses: actions/github-script@v5
       with:
@@ -38,35 +40,35 @@ jobs:
           }
           const indexFilePath = path.join(process.env.GITHUB_WORKSPACE, 'markdown', 'metadata.json');
           fs.writeFileSync(indexFilePath, JSON.stringify(metadataIndex, null, 2));
-        - name: Get SHA of File
-          uses: actions/github-script@v4
-          id: file-sha
-          with:
-            script: |
-              try {
-                const response = await github.repos.getContent({
-                  owner: '${{ env.repoOwner }}',
-                  repo: '${{ env.repoName }}',
-                  path: '${{ env.remotePath }}'
-                });
-                core.setOutput('SHA', response.data.sha);
-              } catch (error) {
-                core.setOutput('SHA', '???');
-              }
-            # Gets the SHA of the changed file
-        - name: Overwrite remote file(s)
-          uses: actions/github-script@v4
-          with:
-            script: |
-              const fs = require('fs')
-              const content = fs.readFileSync('./${{ env.path }}', 'utf8')
-              github.repos.createOrUpdateFileContents({
-                owner: '${{ env.repoOwner }}',
-                repo: '${{ env.repoName }}',
-                path: '${{ env.path }}',
-                message: 'Recalculate Metadata Index',
-                content: Buffer.from(content).toString('base64'),
-                sha: '${{ steps.file-sha.outputs.SHA }}'
-              })
-            github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-            # Add a personal access token to your secrets to run.
+    - name: Get SHA of File
+      uses: actions/github-script@v4
+      id: file-sha
+      with:
+        script: |
+          try {
+            const response = await github.repos.getContent({
+              owner: '${{ env.repoOwner }}',
+              repo: '${{ env.repoName }}',
+              path: '${{ env.remotePath }}'
+            });
+            core.setOutput('SHA', response.data.sha);
+          } catch (error) {
+            core.setOutput('SHA', '???');
+          }
+    # Gets the SHA of the changed file
+    - name: Overwrite remote file(s)
+      uses: actions/github-script@v4
+      with:
+        script: |
+          const fs = require('fs')
+          const content = fs.readFileSync('./${{ env.path }}', 'utf8')
+          github.repos.createOrUpdateFileContents({
+            owner: '${{ env.repoOwner }}',
+            repo: '${{ env.repoName }}',
+            path: '${{ env.path }}',
+            message: 'Recalculate Metadata Index',
+            content: Buffer.from(content).toString('base64'),
+            sha: '${{ steps.file-sha.outputs.SHA }}'
+          })
+        github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        # Add a personal access token to your secrets to run.
