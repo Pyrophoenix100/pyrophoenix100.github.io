@@ -7,7 +7,6 @@
   "markdown/cooking/SpicyMcCrispy/markdown.txt": {
     "title": "Spicy McCrispy",
     "subTitle": "Recipe Replication",
-    "splashImage": "splash.jpg",
-    "down": "stuff"
+    "splashImage": "splash.jpg"
   }
 }
