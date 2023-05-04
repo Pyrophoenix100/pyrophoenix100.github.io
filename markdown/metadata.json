@@ -2,11 +2,13 @@
   "markdown/projects/ThisDocument/markdown.txt": {
     "title": "This.Document",
     "subTitle": "A Personal Github Pages site",
-    "splashImage": "splash.png"
+    "splashImage": "splash.png",
+    "createdDate": "2023-05-01"
   },
   "markdown/cooking/SpicyMcCrispy/markdown.txt": {
     "title": "Spicy McCrispy",
     "subTitle": "Recipe Replication",
-    "splashImage": "splash.jpg"
+    "splashImage": "splash.jpg",
+    "createdDate": "2023-05-02"
   }
 }
