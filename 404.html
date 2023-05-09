@@ -2,87 +2,6 @@
     <title class="typed">Tuchscherer.Code()</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 </head>
-
-<script>
-    path = window.location.pathname;
-    console.log(path)
-    function loadPath(ass) {
-        let promise = new Promise((resolve, reject) => {
-            fetch("/markdown" + ass + "/markdown.tmd")
-              .then((response) => {
-                if (response.status != 404) {
-                    return response.text()
-                } else {
-                    throw new Error("404: Not Found")
-                }
-              })
-              .then(markdownText => {
-                var body = document.getElementsByTagName("markdown")[0];
-                var converter = new showdown.Converter();
-                var text = markdownText;
-                [metadata, markdown] = text.split("### ENDMETADATA ###")
-                body.innerHTML = converter.makeHtml(markdown);
-                meta = attributesToVars(metadata)
-                headerText = document.getElementById("headerText");
-                splashImg = document.getElementById("splash-img");
-                console.log(meta)
-                console.log(meta.splashImage)
-                console.log(meta.title)
-                if (typeof(meta.splashImage) != 'undefined') {
-                    splashImg.src = "/markdown" + path + "/" + meta.splashImage;
-                }
-                if (typeof(meta.title) != 'undefined') {
-                    headerText.innerHTML = meta.title;
-                }
-              })
-              .finally(a => document.body.style.display = "block");
-        });
-    }
-    function attributesToVars(attributeString) { 
-    // Split the string into an array of key-value pairs
-        let pairs = attributeString.split(';').map(pair => pair.trim()).filter(pair => pair != "");
-        // Convert the array into a dictionary object
-        let vars = {};
-        pairs.forEach(pair => {
-            let [key, value] = pair.split(':').map(part => part.trim());
-            vars[key] = value;
-        });
-        return vars;
-    }
-    window.addEventListener('DOMContentLoaded', () => {
-        let promise = new Promise((resolve, reject) => {
-            fetch("/markdown" + path + "/markdown.tmd")
-              .then((response) => {
-                if (response.status != 404) {
-                    return response.text()
-                } else {
-                    throw new Error("404: Not Found")
-                }
-              })
-              .then(markdownText => {
-                var body = document.getElementsByTagName("markdown")[0];
-                var converter = new showdown.Converter();
-                var text = markdownText;
-                [metadata, markdown] = text.split("### ENDMETADATA ###")
-                body.innerHTML = converter.makeHtml(markdown);
-                meta = attributesToVars(metadata)
-                headerText = document.getElementById("headerText");
-                splashImg = document.getElementById("splash-img");
-                console.log(meta)
-                console.log(meta.splashImage)
-                console.log(meta.title)
-                if (typeof(meta.splashImage) != 'undefined') {
-                    splashImg.src = "/markdown" + path + "/" + meta.splashImage;
-                }
-                if (typeof(meta.title) != 'undefined') {
-                    headerText.innerHTML = meta.title;
-                }
-              })
-              .finally(a => document.body.style.display = "block");
-        });
-    });
-</script>
-
 <body>
     <script src="/scripts/include.js"></script>
     <script src="/scripts/bits.js"></script>
@@ -118,11 +37,7 @@
     markdown h1 {
         text-align: left;
     }
-    markdown h1~* {
-        text-indent: 2em !important;
-    }
     markdown h2~p {
-        text-indent: 2em;
         margin-left: 2em;
     }
     #splash-img { 
@@ -151,7 +66,7 @@
         width: 100%; 
         height: 100%;
         z-index: 1;
-        background: linear-gradient(to bottom, #00000000 0%, #00000000 70%, var(--half-dark));
+        background: linear-gradient(to bottom, #00000000 0%, #00000000 70%, var(--quarter-dark));
     }
     @keyframes shift-background {
         0% {
@@ -162,7 +77,7 @@
         }
     }
     #body-div {
-        background-color: var(--dark);
+        background-color: var(--half-dark);
         position: relative;
         top: -10px;
         width: 75%;
@@ -185,6 +100,57 @@
     }
 </style>
 <script>
+    windowPath = window.location.pathname;
+    windowPath = "/projects/ThisDocument/"
+    function loadPath(path) {
+        let promise = new Promise((resolve, reject) => {
+            fetch("/markdown" + path + "/markdown.tmd")
+                .then((response) => {
+                if (response.status != 404) {
+                    return response.text()
+                } else {
+                    throw new Error("404: Not Found")
+                }
+                })
+                .then(markdownText => {
+                var body = document.getElementsByTagName("markdown")[0];
+                var converter = new showdown.Converter();
+                var text = markdownText;
+                [metadata, markdown] = text.split("### ENDMETADATA ###")
+                body.innerHTML = converter.makeHtml(markdown);
+                meta = attributesToVars(metadata)
+                headerText = document.getElementById("headerText");
+                splashImg = document.getElementById("splash-img");
+                console.log(meta)
+                console.log(meta.splashImage)
+                console.log(meta.title)
+                if (typeof(meta.splashImage) != 'undefined') {
+                    splashImg.src = "/markdown" + path + "/" + meta.splashImage;
+                }
+                if (typeof(meta.title) != 'undefined') {
+                    headerText.innerHTML = meta.title;
+                }
+                replaceIncludes();
+                })
+                .finally(a => document.body.style.display = "block");
+                
+        });
+    }
+    function attributesToVars(attributeString) { 
+    // Split the string into an array of key-value pairs
+        let pairs = attributeString.split(';').map(pair => pair.trim()).filter(pair => pair != "");
+        // Convert the array into a dictionary object
+        let vars = {};
+        pairs.forEach(pair => {
+            let [key, value] = pair.split(':').map(part => part.trim());
+            vars[key] = value;
+        });
+        return vars;
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+        loadPath(windowPath)
+    });
+    
     window.onload = () => {
         setTimeout(() => {typingText(50)}, 400);
     }
