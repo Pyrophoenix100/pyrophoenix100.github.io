@@ -1,1 +1,14 @@
-{}
+{
+  "markdown/projects/ThisDocument/markdown.tmd": {
+    "title": "This.Document",
+    "subTitle": "A Personal Github Pages site",
+    "splashImage": "splash.png",
+    "createdDate": "2023-05-01"
+  },
+  "markdown/cooking/SpicyMcCrispy/markdown.tmd": {
+    "title": "Spicy McCrispy",
+    "subTitle": "Recipe Replication",
+    "splashImage": "splash.jpg",
+    "createdDate": "2023-05-02"
+  }
+}
