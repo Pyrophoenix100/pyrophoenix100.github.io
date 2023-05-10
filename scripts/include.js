@@ -56,6 +56,7 @@ Changelog:
 - Moved some things to functions.
 */
 function main() {}
+const debug = true;
 const subRegex = /{{ (.*?) }}/sg;
 const ifRegex = /{\? if (.*?) \?}.*?{\? endif \1 \?}/sg;
 const ifElseRegex = /{\? if (.*?) \?}.*?{\? else \?}.*?{\? endif \1 \?}/sg;
@@ -116,10 +117,8 @@ class IfElseTag extends IfTag {
 
 function replaceIncludes() {
   let includes = document.getElementsByTagName("include");
-  var includeElem = document.getElementsByTagName('include')[document.getElementsByTagName('include').length - 1];
   includesArray = Array.from(includes);
   let vars
-  let pairs = []
   includesArray.forEach((element) => {
       HTMLFileBody(element.attributes['src'].value)
       .then(collection => {
@@ -143,31 +142,56 @@ function replaceIncludes() {
 }
 
 function tagsToObjects(HTMLBuffer) {
-  //Sub Tags
   objTags = []
-  ifElseTextTags = [...HTMLBuffer.matchAll(ifElseRegex)];
-  ifElseTextTags.forEach((e) => {
-    f = e[0].split("{? else ?}");
-    content = f[0].substring(("{? if " + e[1] + " ?}").length);
-    elseContent = f[1].substring(0, f[1].length - ("{? endif " + e[1] + " ?}").length);
-    tempTag = new IfElseTag(e[1], content, elseContent);
-    objTags = objTags.concat(tempTag);
-    HTMLBuffer = HTMLBuffer.substring(0, e.index) + tempTag + HTMLBuffer.substring(e.index+e[0].length);
-  })
-  ifTextTags = [...HTMLBuffer.matchAll(ifRegex)];
-  ifTextTags.forEach((e) => {
-    //Hell
-    tempTag = new IfTag(e[1], e[0].substring(("{? if " + e[1] + " ?}").length, e[0].length - ("{? endif " + e[1] + " ?}").length));
-    objTags = objTags.concat(tempTag);
-    HTMLBuffer = HTMLBuffer.substring(0, e.index) + tempTag + HTMLBuffer.substring(e.index+e[0].length);
-  })
-  subTextTags = [...HTMLBuffer.matchAll(subRegex)]; //Get matches as array
-  subTextTags.forEach((e) => {
-    tempTag = new Tag(e[1])
-    objTags = objTags.concat(tempTag)
-    HTMLBuffer = HTMLBuffer.substring(0, e.index) + tempTag + HTMLBuffer.substring(e.index+e[0].length);
-  })
+  // ifElseTextTags = [...HTMLBuffer.matchAll(ifElseRegex)];
+  // ifElseTextTags.forEach((e) => {
+  //   f = e[0].split("{? else ?}");
+  //   content = f[0].substring(("{? if " + e[1] + " ?}").length);
+  //   elseContent = f[1].substring(0, f[1].length - ("{? endif " + e[1] + " ?}").length);
+  //   tempTag = new IfElseTag(e[1], content, elseContent);
+  //   objTags = objTags.concat(tempTag);
+  //   HTMLBuffer = HTMLBuffer.substring(0, e.index) + tempTag + HTMLBuffer.substring(e.index+e[0].length);
+  // })
+  // ifTextTags = [...HTMLBuffer.matchAll(ifRegex)];
+  // ifTextTags.forEach((e) => {
+  //   tempTag = new IfTag(e[1], e[0].substring(("{? if " + e[1] + " ?}").length, e[0].length - ("{? endif " + e[1] + " ?}").length));
+  //   objTags = objTags.concat(tempTag);
+  //   HTMLBuffer = HTMLBuffer.substring(0, e.index) + tempTag + HTMLBuffer.substring(e.index+e[0].length);
+  // })
+  // subTextTags = [...HTMLBuffer.matchAll(subRegex)];
+  // subTextTags.forEach((e) => {
+  //   tempTag = new Tag(e[1]);
+  //   objTags = objTags.concat(tempTag);
+  //   HTMLBuffer = HTMLBuffer.substring(0, e.index) + tempTag + HTMLBuffer.substring(e.index+e[0].length);
+  //   console.log("Sub tag replaced (" + tempTag + "): " + HTMLBuffer);
+  // })
   
+  // IF ELSE
+  while (ifElseMatch = ifElseRegex.exec(HTMLBuffer)) {
+    ifElseArray = ifElseMatch[0].split( "{? else ?}" );
+    content = ifElseArray[0].substring( ("{? if " + ifElseMatch[1] + " ?}").length );
+    elseContent = ifElseArray[1].substring(0, ifElseArray[1].length - ("{? endif " + ifElseMatch[1] + " ?}").length);
+    tempTag = new IfElseTag(ifElseMatch[1], content, elseContent);
+    objTags = objTags.concat(tempTag);
+    HTMLBuffer = HTMLBuffer.replace(ifElseMatch[0], tempTag.toString());
+  }
+
+  // IF
+  while (ifMatch = ifRegex.exec(HTMLBuffer)) {
+    ifContent = ifMatch[0].substring(("{? if " + ifMatch[1] + " ?}").length, ifMatch[0].length - ("{? endif " + ifMatch[1] + " ?}").length);
+    tempTag = new IfTag(ifMatch[1], ifContent);
+    objTags = objTags.concat(tempTag);
+    HTMLBuffer = HTMLBuffer.replace(ifMatch[0], tempTag.toString());
+  }
+
+  // SUB
+  while (subMatch = subRegex.exec(HTMLBuffer)) {
+    tempTag = new Tag(subMatch[1]);
+    objTags = objTags.concat(tempTag);
+    HTMLBuffer = HTMLBuffer.replace(subMatch[0], tempTag.toString());
+    console.log("Sub tag replaced (" + tempTag + "): " + HTMLBuffer);
+  }
+
   return [objTags, HTMLBuffer];
 }
 

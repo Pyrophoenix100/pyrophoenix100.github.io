@@ -30,7 +30,7 @@ I specifically made the var tag whitespace insensitive to allow for multiline fo
         font-size: 15px;
         background-color: var(--dark);
         color: var(--half-light);
-        
+
         display: inline-flex;
         padding: 1px;
         align-items: center;
@@ -55,3 +55,4 @@ I specifically made the var tag whitespace insensitive to allow for multiline fo
 </style>
 ```
 There's two replacement tags in here, one in the href attribute of the a tag, and one inside the a tag for the repo name. I'm suddenly realizing that in this specific example, the include statement is longer than the html for the actual include file, so there's not much point, except being more easily able to replicate these components, and possibly make documentation that makes it easier to include these components in future projects. I should definitely make this packageable, so that it can be imported with npm. Anyways, in this example, the repoName variable is replaced with "Snippets" and the repoPath is replaced with "pyrophoenix100/Snippets". It's the same format as embedded style tags, so it looks nice in code if you want to add inline style to the element.
+In its simplest form, it can be used without any metadata to include an element repeatedly. Just create an include tag and set the src attribute. 

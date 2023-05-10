@@ -3,6 +3,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 </head>
 <body>
+    <link rel="stylesheet"
+      href="/assets/code-highlight.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="/scripts/include.js"></script>
     <script src="/scripts/bits.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
@@ -147,10 +150,15 @@
         return vars;
     }
     window.addEventListener('DOMContentLoaded', () => {
-        loadPath(windowPath)
+        loadPath(windowPath);
     });
     
     window.onload = () => {
-        setTimeout(() => {typingText(50)}, 400);
+        setTimeout(() => {
+            typingText(50)
+            hljs.highlightAll()
+        }, 50);
+        
+
     }
 </script>

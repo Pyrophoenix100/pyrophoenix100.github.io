@@ -3,7 +3,10 @@
     repoPath: "username/repoName" should fit into the format https://github.com/{ repoPath }
     repoName: Name of the repository
 -->
-<a class='mini-github-tag' href="https://github.com/{{ repoPath }}"><img class='mini-github-tag-icon' src="/assets/logos/github-light.svg">{{ repoName }}</a>
+<a class='mini-github-tag' href="/{{ path }}">
+    <img src="/assets/logos/website-light.svg" class="mini-article-tag-icon">
+    {{ article }}
+</a>
 <style>
     .mini-github-tag {
         font-size: 15px;
@@ -23,7 +26,7 @@
     .mini-github-tag:hover {
         box-shadow: 1px 1px 3px var(--box-shadow);
     }
-    .mini-github-tag-icon {
+    .mini-article-tag-icon {
         height: 1em;
         width: 1em;
         margin-right: 3px;
