@@ -126,7 +126,6 @@
 </style>
 <script>
     windowPath = window.location.pathname;
-    windowPath = "/projects/ThisDocument"
     function loadPath(path) {
         let promise = new Promise((resolve, reject) => {
             fetch("/markdown" + path + "/markdown.tmd")
