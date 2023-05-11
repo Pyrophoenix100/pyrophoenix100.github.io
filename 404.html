@@ -2,6 +2,7 @@
     <title class="typed">Tuchscherer.Code()</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 </head>
+<html>
 <body>
     <link rel="stylesheet"
       href="/assets/code-highlight.css">
@@ -21,9 +22,14 @@
         </div>
     </div>
 </body>
+</html>
 <style>
+    html {
+        background-color: var(--quarter-dark);
+    }
     body {
         display: none;
+        --accent-height: 50vh;
     }
     markdown {
         width: 90%;
@@ -38,38 +44,44 @@
         margin-right: auto;
     }
     markdown h1 {
+        margin-left: 0em;
         text-align: left;
     }
+    markdown h1~h2,p {
+        margin-left: 1em;
+    }
     markdown h2~p {
-        margin-left: 2em;
+        margin-left: 2.5em;
     }
-    #splash-img { 
-        width: 100%;
-        border-top-right-radius: 10px;
-        border-top-left-radius: 10px;
-        max-height: 20vh;
-        object-fit: cover;
-        margin-block-end: 10px;
+    markdown p {
+        line-height: 2em;
     }
+    markdown code { 
+        background-color: #1a1b26;
+        padding: 0.2em;
+        border-radius: 0.2em;
+    }
+
     #accent {
         text-align: center;
         background-image: url('/assets/accents/polygon-scatter-haikei.svg');
         position: relative;
         width: 100%;
-        height: auto;
+        height: var(--accent-height);
         padding-bottom: 50px;
         animation: shift-background 55s linear infinite;
         background-repeat: repeat;
-        z-index: -1;
+        z-index: 0;
     }
+
     #accent-fg {
         position: absolute; 
-        top: 0;
-        left: 0;
+        top: 0px;
+        left: 0px;
         width: 100%; 
         height: 100%;
         z-index: 1;
-        background: linear-gradient(to bottom, #00000000 0%, #00000000 70%, var(--quarter-dark));
+        background: linear-gradient(to bottom, #00000000 0%, #00000000 20%, var(--quarter-dark));
     }
     @keyframes shift-background {
         0% {
@@ -82,11 +94,19 @@
     #body-div {
         background-color: var(--half-dark);
         position: relative;
-        top: -10px;
+        top: calc(-10px - var(--accent-height));
         width: 75%;
         left: 12.5%;
         box-shadow: 2px 2px 5px var(--box-shadow);
         border-radius: 10px;
+    }
+    #splash-img { 
+        width: 100%;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        max-height: 100%;
+        object-fit: cover;
+        margin-block-end: 10px;
     }
     #body-text {
         display: flex;
@@ -97,46 +117,49 @@
         font-variant: small-caps;
         font-size: 40px;
         position: relative;
-        top: -45px;
+        top: calc(-45px - var(--accent-height));
         left: 10%;
+        width: 80%;
+        text-align: center;
         margin-block-end: 0px;
     }
 </style>
 <script>
     windowPath = window.location.pathname;
+    windowPath = "/projects/ThisDocument"
     function loadPath(path) {
         let promise = new Promise((resolve, reject) => {
             fetch("/markdown" + path + "/markdown.tmd")
                 .then((response) => {
-                if (response.status != 404) {
-                    return response.text()
-                } else {
-                    throw new Error("404: Not Found")
-                }
-                })
+                    if (response.status != 404) {
+                        return response.text()
+                    } else {
+                        throw new Error("404: Not Found")
+                    }
+                    })
                 .then(markdownText => {
-                var body = document.getElementsByTagName("markdown")[0];
-                var converter = new showdown.Converter();
-                var text = markdownText;
-                [metadata, markdown] = text.split("### ENDMETADATA ###")
-                body.innerHTML = converter.makeHtml(markdown);
-                meta = attributesToVars(metadata)
-                headerText = document.getElementById("headerText");
-                splashImg = document.getElementById("splash-img");
-                console.log(meta)
-                console.log(meta.splashImage)
-                console.log(meta.title)
-                if (typeof(meta.splashImage) != 'undefined') {
-                    splashImg.src = "/markdown" + path + "/" + meta.splashImage;
-                }
-                if (typeof(meta.title) != 'undefined') {
-                    headerText.innerHTML = meta.title;
-                }
-                replaceIncludes();
+                    var body = document.getElementsByTagName("markdown")[0];
+                    var converter = new showdown.Converter();
+                    var text = markdownText;
+                    [metadata, markdown] = text.split("### ENDMETADATA ###")
+                    body.innerHTML = converter.makeHtml(markdown);
+                    meta = attributesToVars(metadata)
+                    headerText = document.getElementById("headerText");
+                    splashImg = document.getElementById("splash-img");
+                    if (typeof(meta.splashImage) != 'undefined') {
+                        splashImg.src = "/markdown" + path + "/" + meta.splashImage;
+                    }
+                    if (typeof(meta.title) != 'undefined') {
+                        headerText.innerHTML = meta.title;
+                    }
+                    replaceIncludes();
                 })
-                .finally(a => document.body.style.display = "block");
-                
+                .finally((a) => {
+                    document.body.style.display = "block";
+                    resolve()
+                });
         });
+        return promise;
     }
     function attributesToVars(attributeString) { 
     // Split the string into an array of key-value pairs
@@ -150,15 +173,9 @@
         return vars;
     }
     window.addEventListener('DOMContentLoaded', () => {
-        loadPath(windowPath);
-    });
-    
-    window.onload = () => {
-        setTimeout(() => {
+        loadPath(windowPath).then(() => {
             typingText(50)
             hljs.highlightAll()
-        }, 50);
-        
-
-    }
+        })
+    });
 </script>

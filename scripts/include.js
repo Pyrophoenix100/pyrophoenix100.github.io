@@ -1,6 +1,7 @@
 /**
  * This is a HTML include library, entirely in JS. You can utilize it by creating an
- * <import src="[path to html file]"> tag and importing the library. Nothing else needs to be done.
+ * <import src="[path to html file]"> tag and importing the library. Then just call the replaceIncludes() 
+ * function in a script tag when DOM content manipulation is done.
  * This library includes no safety features and is very likely horribly unsafe. This is only intended for 
  * static sites and homebrew projects. That being said, if you can make money off this, I encourage it. 
  
@@ -33,11 +34,10 @@
  **/
 
 /* Version is V0.05 */
-/* 
 
+/* 
 Planned
 - Add meta processing (special tag for outer handling?)
-- OOPs
 
 Changelog:
 (V0.05):
@@ -189,7 +189,6 @@ function tagsToObjects(HTMLBuffer) {
     tempTag = new Tag(subMatch[1]);
     objTags = objTags.concat(tempTag);
     HTMLBuffer = HTMLBuffer.replace(subMatch[0], tempTag.toString());
-    console.log("Sub tag replaced (" + tempTag + "): " + HTMLBuffer);
   }
 
   return [objTags, HTMLBuffer];
@@ -206,7 +205,6 @@ function attributesToVars(attributeString) {
    });
    return vars;
  }
- 
  function HTMLFileBody(fileUrl) {
    return new Promise((resolve, reject) => {
      fetch(fileUrl)
@@ -223,6 +221,6 @@ function attributesToVars(attributeString) {
    });
  }
  
- window.addEventListener("DOMContentLoaded", (event) => {
-   replaceIncludes();
- });
+//  window.addEventListener("DOMContentLoaded", (event) => {
+//    replaceIncludes();
+//  });

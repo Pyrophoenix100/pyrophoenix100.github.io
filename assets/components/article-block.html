@@ -1,0 +1,73 @@
+<div class="article-block" onclick="window.location.href = '/{{ path }}'">
+    <div style="background-image: url(/markdown/{{ path }}/{{ image }})" class="article-block-image"></div>
+    <h3 class="article-block-title">{{ title }}</h3>
+    <p class="article-block-desc">{{ subTitle }}</p>
+    <p class="article-block-date">{{ date }}</p>
+</div>
+<style>
+    .article-block {
+        margin: 1em;
+        --height: 200px;
+        width: 250px;
+        height: var(--height);
+        background-color: var(--half-dark);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      
+      .article-block-image {
+        height: 75%;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        transition: transform 0.5s;
+      }
+      
+      .article-block:hover .article-block-image {
+        transform: translateY(calc(-1 * var(--height) + 50px));
+      }
+      .article-block:hover .article-block-title {
+        transform: translateY(calc(-1 * var(--height) + 50px));
+      }
+      .article-block:hover .article-block-desc {
+        transform: translateY(calc(-1 * var(--height) + 50px));
+      }
+      .article-block:hover .article-block-date {
+        transform: translateY(calc(-1 * var(--height) + 50px));
+      }
+      .article-block-title {
+        margin-top: 10px;
+        text-align: center;
+        color: white;
+        transition: transform 0.5s;
+        opacity: 1;
+        font-size: 1.2em;
+      }
+      
+      .article-block-desc {
+        text-align: center;
+        font-size: 14px;
+        margin-top: 10px;
+        color: white;
+        transition: transform 0.5s;
+        opacity: 1;
+        margin: 1em;
+      }
+      
+      .article-block:hover .article-block-subtitle {
+        opacity: 1;
+      }
+      
+      .article-block-date {
+        text-align: center;
+        font-size: 12px;
+        margin-top: 10px;
+        color: white;
+        transition: transform 0.5s;
+        opacity: 1;
+      }
+      
+      .article-block:hover .article-block-date {
+        opacity: 1;
+      }
+      </style>

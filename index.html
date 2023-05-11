@@ -41,16 +41,77 @@
             </div>
         </div>
     </div>
-    <div id="recents">
+    <div id="recent">
         <h1>Recent Pages</h1>
-        <script>
-            window.addEventListener("load", () => {
-            });
-        </script>
+        <div id="recent-pages"></div>
+<script>
+async function getRecentPages() {
+    let includes = ""
+    fetch("/markdown/metadata.json")
+    .then((response) => {
+        return response.json();
+    })
+    .then((responseObject) => {
+        Object.keys(responseObject).forEach((articleName) => {
+            article = responseObject[articleName]
+            let include = "<include src='/assets/components/article-block.html' vars='";
+            include = include + `title:${article.title};`;
+            include = include + `subTitle:${article.subTitle};`;
+            include = include + `image:${article.splashImage};`;
+            include = include + `path:${articleName.replace("markdown/", "").replace("/markdown.tmd", "")};`;
+            include = include + `date:${article.createdDate}';></include>`;
+            includes = includes + include;
+        })
+        return includes;
+    })
+    .then((responseObject) => {
+        console.log(includes)
+        document.getElementById("recent-pages").innerHTML = includes;
+        replaceIncludes()
+    })
+}
+
+</script>
     </div>
 </body>
 <style>
 
+    #recent-pages {
+        display: flex;
+        overflow-x: auto;
+        margin-bottom: 10%;
+    }
+    #recent-pages:hover::-webkit-scrollbar {
+        display: block;
+    }
+    /* Hide the scrollbar by default */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    ::-webkit-scrollbar {
+        height: 10px;
+        width: 10px;
+    }
+    ::-webkit-scrollbar-corner {
+        background-color: #1a1b26;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+    color: none;
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: var(--quarter-light);
+    border-radius: 5px;
+    }
+    
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+    background: var(--half-light);
+    
+    }
+    /* Show the scrollbar when the content is being hovered */
 
     #splash {
         text-align: center;
@@ -59,7 +120,6 @@
         top: -40px;
         width: 100%;
         height: auto;
-        padding-bottom: 50px;
         animation: shift-background 55s linear infinite;
         background-repeat: repeat;
     }
@@ -127,5 +187,8 @@
 
 </style>
 <script>
-    window.onload = setTimeout(() => {typingText(50)}, 400);
+    window.addEventListener("load", () => { 
+        getRecentPages(); 
+        setTimeout(() => {typingText(50)}, 400) 
+    });
 </script>

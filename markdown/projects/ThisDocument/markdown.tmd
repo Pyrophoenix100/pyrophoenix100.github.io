@@ -6,14 +6,14 @@ title: This.Document; subTitle: A Personal Github Pages site; splashImage: splas
 The short answer is that I wanted a website to show off some of my personal projects and act as a sort of hub for anything that I make and want to show off. The long answer is that there is a lot of "Why"'s behind this website. The big "Why" behind this project is why I decided to do it in the most unintuitive way possible. For all of my projects, I seek to find a skill or paradigm that I can base a project around. For this project, I wanted to focus on reinventing the wheel to get a incredibly fast loading site, so that I can see why we have modular code nowadays, and why the JS package ecosystem isn't as bad as I think it is. Quite a few of my previous projects have been mash-ups of different libraries, with chunks of my code in random places. This project would be (almost) all my work, all in one place, and would take no server side processing (My reasoning was that I didn't think server-side processing was necessary for what was going to be a static site).
 
 ## Include.JS
-So this <include src="/assets/components/mini-github-tag.html" vars="repoName: Snippets; repoPath: pyrophoenix100/Snippets;"></include> is one of my include tags, specifically, a stylized link to a Github repo. It breaks the line height a little bit in it's current form, but I think it looks significantly better than a raw link to a Github repo. It's entirely controlled by it's metadata, so it looks like this in code. 
+This <include src="/assets/components/mini-github-tag.html" vars="repoName: Snippets; repoPath: pyrophoenix100/Snippets;"></include> is one of my include tags, specifically, a stylized link to a Github repo. It breaks the line height a little bit in it's current form, but I think it looks significantly better than a raw link to a Github repo. It's entirely controlled by it's metadata, so it looks like this in code. It also doesn't fully replace the tag by default, so you can see the code by going into your browser's inspect element view.
 ```html
 <include src="/assets/components/mini-github-tag.html" vars="
 repoName: Snippets;
 repoPath: pyrophoenix100/Snippets;
 "></include>
 ```
-I specifically made the var tag whitespace insensitive to allow for multiline formatting, so metadata is easier to read. The metadata works almost exactly like Jinja2, with the exception that it only has replacement and conditional tags so far. I plan to include for tags, for array looping, but that's something for the future. This is the actual HTML code for the mini Github tag. It works the exact same as a Jinja template, just in JS, and missing most of the features. 
+I specifically made the var tag whitespace insensitive to allow for multiline formatting, so metadata is easier to read. The metadata works almost exactly like Jinja2, with the exception that it only has replacement and conditional tags so far. This is the actual HTML code for the mini Github tag. 
 
 `{{ variable }}` replaces the tag with variables value in the metadata.
 
@@ -30,7 +30,6 @@ I specifically made the var tag whitespace insensitive to allow for multiline fo
         font-size: 15px;
         background-color: var(--dark);
         color: var(--half-light);
-
         display: inline-flex;
         padding: 1px;
         align-items: center;
@@ -55,4 +54,4 @@ I specifically made the var tag whitespace insensitive to allow for multiline fo
 </style>
 ```
 There's two replacement tags in here, one in the href attribute of the a tag, and one inside the a tag for the repo name. I'm suddenly realizing that in this specific example, the include statement is longer than the html for the actual include file, so there's not much point, except being more easily able to replicate these components, and possibly make documentation that makes it easier to include these components in future projects. I should definitely make this packageable, so that it can be imported with npm. Anyways, in this example, the repoName variable is replaced with "Snippets" and the repoPath is replaced with "pyrophoenix100/Snippets". It's the same format as embedded style tags, so it looks nice in code if you want to add inline style to the element.
-In its simplest form, it can be used without any metadata to include an element repeatedly. Just create an include tag and set the src attribute. 
+In its simplest form, it can be used without any metadata to include an element repeatedly. Just create an include tag and set the src attribute. You can see an example of this at the top of every page, the header, which was the original reason I created this library. I can modify one HTML file and have it propagate to every other page on the site easily, without using a JS framework or other solution. The entirety of Include.JS is only 7940B, or just under 8KB, so it loads quickly and is simple as possible. 
