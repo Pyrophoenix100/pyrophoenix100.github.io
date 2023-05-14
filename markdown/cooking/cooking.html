@@ -1,0 +1,47 @@
+<head>
+    <title class="typed">Tuchscherer.Code()</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body>
+    <script src="/scripts/include.js"></script>
+    <script src="/scripts/bits.js"></script>
+    <include src='/header.html' outer="true"></include>
+    <include src='/assets/components/splash.html' vars="height:50vh;"></include>
+    <div id="title-text">
+        <h1 id="category" class="typed">Cooking</h1>
+        <h2 id="description" class="typed">Coding with Carbon</h2>
+    </div>
+    <div class="container">
+        <div id="pages"></div>
+    </div>
+</div>
+
+<style>
+    #title-text {
+        text-align: center;
+        width: 100%;
+    }
+    .container {
+        background-color: var(--half-dark);
+        position: relative;
+        width: 80%;
+        left: 10%;
+        padding: 10px;
+        box-shadow: 2px 2px 5px var(--box-shadow);
+        border-radius: 10px;
+    }
+    #pages {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+</style>
+<script>
+    window.addEventListener("load", () => {
+        getRecentPages("pages","cooking").then(() => {
+            replaceIncludes();
+            setTimeout(() => {typingText(50)}, 400) 
+        })
+    });
+</script>

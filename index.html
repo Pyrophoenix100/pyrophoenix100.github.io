@@ -3,11 +3,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 </head>
 <body>
-    <script src="scripts/include.js"></script>
-    <script src="scripts/bits.js"></script>
+    <script src="/scripts/include.js"></script>
+    <script src="/scripts/bits.js"></script>
     <include src='header.html' outer="true"></include>
-    <div id="splash">
-        <div id="splash-fg"></div>
+    <include src="/assets/components/splash.html" vars="height:75vh;"></include>
         <h1 id="name" class="typed">Alec Tuchscherer</h1>
         <div class="container">
             <div class="column">
@@ -39,54 +38,28 @@
                     path: projects/ThisDocument;"</include>
                 </p>
             </div>
+            <div id="recent">
+                <h2 style="text-align:center;">Recent Pages</h2>
+                <div id="recent-pages"></div>
+            </div>
         </div>
-    </div>
-    <div id="recent">
-        <h1>Recent Pages</h1>
-        <div id="recent-pages"></div>
-<script>
-async function getRecentPages() {
-    let includes = ""
-    fetch("/markdown/metadata.json")
-    .then((response) => {
-        return response.json();
-    })
-    .then((responseObject) => {
-        Object.keys(responseObject).forEach((articleName) => {
-            article = responseObject[articleName]
-            let include = "<include src='/assets/components/article-block.html' vars='";
-            include = include + `title:${article.title};`;
-            include = include + `subTitle:${article.subTitle};`;
-            include = include + `image:${article.splashImage};`;
-            include = include + `path:${articleName.replace("markdown/", "").replace("/markdown.tmd", "")};`;
-            include = include + `date:${article.createdDate}';></include>`;
-            includes = includes + include;
-        })
-        return includes;
-    })
-    .then((responseObject) => {
-        console.log(includes)
-        document.getElementById("recent-pages").innerHTML = includes;
-        replaceIncludes()
-    })
-}
-
-</script>
     </div>
 </body>
 <style>
-
+    #recent {
+        width: 90%;
+    }
     #recent-pages {
         display: flex;
         overflow-x: auto;
-        margin-bottom: 10%;
+        margin-bottom: 2em;
     }
     #recent-pages:hover::-webkit-scrollbar {
         display: block;
     }
     /* Hide the scrollbar by default */
     ::-webkit-scrollbar {
-        display: none;
+        display: block;
     }
     ::-webkit-scrollbar {
         height: 10px;
@@ -97,7 +70,7 @@ async function getRecentPages() {
     }
     /* Track */
     ::-webkit-scrollbar-track {
-    color: none;
+        color: none;
     }
     
     /* Handle */
@@ -113,41 +86,19 @@ async function getRecentPages() {
     }
     /* Show the scrollbar when the content is being hovered */
 
-    #splash {
-        text-align: center;
-        background-image: url('assets/accents/polygon-scatter-haikei.svg');
-        position: relative;
-        top: -40px;
-        width: 100%;
-        height: auto;
-        animation: shift-background 55s linear infinite;
-        background-repeat: repeat;
-    }
-    #splash-fg {
-        position: absolute; 
-        top: 0;
-        left: 0;
-        width: 100%; 
-        height: 100%;
-        background: linear-gradient(to bottom, #00000000 0%, #00000000 60%, var(--quarter-dark));
-    }
-@keyframes shift-background {
-    0% {
-        background-position: 0 0;
-    }
-    100% {
-        background-position: 0 100vh;
-    }
-}
     #name {
-        padding: 70px;
+        padding-top: 30px;
+        padding-bottom: 40px;
+        width: 100%;
+        text-align: center;
     }
     .container {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-around;
         background-color: var(--half-dark);
         position: relative;
-        top: -10px;
+        top: -20px;
         width: 80%;
         left: 10%;
         box-shadow: 2px 2px 5px var(--box-shadow);
@@ -165,7 +116,6 @@ async function getRecentPages() {
     }
 
     h1 {
-        margin: 30px;
         color: var(--light);
     }
     .column {
@@ -184,11 +134,12 @@ async function getRecentPages() {
             background-image: url("assets/accents/polygon-scatter-haikei-mobile.svg");
         }
     }
-
 </style>
 <script>
     window.addEventListener("load", () => { 
-        getRecentPages(); 
+        getRecentPages("recent-pages", "", 10).then(() => {
+            replaceIncludes();
+        })
         setTimeout(() => {typingText(50)}, 400) 
     });
 </script>

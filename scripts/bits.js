@@ -38,3 +38,35 @@ function typeThis() {
         typeText(typedElements[i], text, delay, leader);
     }
 }
+
+async function getRecentPages(containerId, category="", limit=undefined) {
+    let includes = ""
+    return fetch("/markdown/metadata.json")
+    .then((response) => {
+        return response.json();
+    })
+    .then((responseObject) => {
+        Object.keys(responseObject).forEach((articleName) => {
+            let articles = [];
+            if (articleName.includes(category)) {
+                articles.push(responseObject[articleName]);
+            }
+            articles.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+            articles = articles.slice(0,limit);
+            articles.forEach((article) => {
+                let include = "<include src='/assets/components/article-block.html' vars='";
+                include = include + `title:${article.title};`;
+                include = include + `subTitle:${article.subTitle};`;
+                include = include + `image:${article.splashImage};`;
+                include = include + `path:${articleName.replace("markdown/", "").replace("/markdown.tmd", "")};`;
+                include = include + `date:${article.createdDate}';></include>`;
+                includes = includes + include;
+            })
+        })
+        return includes;
+    })
+    .then((responseObject) => {
+        console.log(includes)
+        document.getElementById(containerId).innerHTML = includes;
+    })
+}
