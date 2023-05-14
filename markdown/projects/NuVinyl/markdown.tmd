@@ -1,0 +1,102 @@
+title: NuVinyl;
+subTitle: A new kind of record player;
+splashImage: nuVinyl.jpg;
+createdDate: 2023-05-14;
+### ENDMETADATA ###
+# An NFC-Powered Vinyl Player
+<video width="300" height="480" style="margin: 0 auto; display: block;" controls>
+  <source src="/markdown/projects/NuVinyl/working-video.mp4" type="video/mp4">
+</video>
+NuVinyl is one of my favorite projects to show off to others. It's simple enough that I can explain the trick to anyone, and complicated enough that it looks like magic at first. Most of the first reactions I get when I show this off are disbelief, or assuming that I'm controlling it somehow else, and that the vinyl is just misdirection. But it's so much simpler than that. There's just a NFC reader, [the SunFounder MFRC522](http://wiki.sunfounder.cc/index.php?title=Mifare_RC522_Module_RFID_Reader), underneath the top part, and small NFC stickers on the backs of the vinyls/disks. It hosts a Spotify Connect server via Raspotify, which allows it to be used as a regular wireless speaker when the NFC reader is not in use, with the addition of a screen that will always display the currently playing song. It's all controlled with a Raspberry Pi 3 B+, which has a cheap USP Wi-Fi adapter to give it network connectivity. Audio is handled by external speakers via a 3.5mm audio jack.
+
+## The Process
+![](/markdown/projects/NuVinyl/showoff.jpg)
+This actually all started because I wanted to find a reason to use an MFRC522 module that I had laying around. I eventually came up with the idea for a vinyl player that would operate off of just placing a vinyl on it from seeing one that somebody else made that used OCR to find albums. My problem with just using OCR was that it wouldn't have any support for all of the playlists I spend time collating. 
+
+A simple solution to that would be to have it use the Spotify URI system. Each Spotify song, artist, album, playlist, user, and other object has a URI, in a form like: `spotify:album:7fqQw15NluzneJ2HzDGN2U`. Spotify URIs actually have some cool properties, if you paste it into your address bar on a browser with Spotify installed, it'll open that resource in your Spotify app. You can also put them into the search bar of your Spotify app to go to the resource. These URI's are used for every resource, and most URIs can be played through the Spotify API on a device. This feature was important, as I used the [Start/Resume Playback](https://developer.spotify.com/documentation/web-api/reference/start-a-users-playback) endpoint of the Spotify API along with the `device_id` of the Raspotify server running on my NuVinyl to send requests to play albums. Since these URI's are so short, they can be easily stored within the 256B memory of the NFC tags I'm using. This solution allows NuVinyl to also play artists and playlists, alongside albums. Also, since NuVinyl uses Spotify to fetch music, it's easily expandable with any new vinyls I happen to buy. All I need to do is put an NFC sticker on the back of the vinyl and write the URI of the album to it.
+
+From there, I had the plan down, I just had to implement it. I created a Flask web server to handle the front end and Spotify authentication, as it wasn't going to have any interface on the device, so all connections had to be made over network. The Flask server simply spools up the two worker processes, `reader.py` and `screen.py`. `reader.py` is the worker process for the MFRC522, using a slightly modified MFRC522 library, that allows for compatibility with different NFC tags. (The only modification I made was changing it from writing 16 bytes at a time to 4 bytes at a time). This is the only function I changed, in the SimpleMFRC522.py file:
+```python
+#BLOCK_ADDRS = [8, 9, 10]
+ BLOCK_ADDRS = [6,7,8,9,10,11,12,13,14,15,16,17,18]
+def write_no_block(self, text):
+    (status, TagType) = self.READER.MFRC522_Request(self.READER.PICC_REQIDL)
+    if status != self.READER.MI_OK:
+        return None, None
+    (status, uid) = self.READER.MFRC522_Anticoll()
+    if status != self.READER.MI_OK:
+        return None, None
+    id = self.uid_to_num(uid)
+    self.READER.MFRC522_SelectTag(uid)
+    status = self.READER.MFRC522_Auth(self.READER.PICC_AUTHENT1A, 11, self.KEY, uid)
+    self.READER.MFRC522_Read(11)
+    if status == self.READER.MI_OK:
+        data = bytearray()
+#       data.extend(bytearray(text.ljust(len(self.BLOCK_ADDRS) * 16).encode('ascii')))
+        data.extend(bytearray(text.ljust(len(self.BLOCK_ADDRS) * 8, "\0").encode('ascii')))
+        i = 0
+        for block_num in self.BLOCK_ADDRS:
+#           self.READER.MFRC522_Write(block_num, data[(i*16):(i+1)*16])
+            self.READER.MFRC522_Write(block_num,data[(i*4):(i+1)*4] + bytearray(b"\0"*12)) 
+            i += 1
+    self.READER.MFRC522_StopCrypto1()
+    return id, text[0:(len(self.BLOCK_ADDRS) * 4)]
+```
+I can't find any notes on this, but I remember that it was cutting off parts of my input on the tag, so I had to pad it with null characters to get the data in the parts of the tag that are actually storing data. I do have this comment I left, `blocks = self.BLOCK_ADDRS[::4] #NTAG215 reads in 4 block increments, but writes one block at a time, this should correct this on the read side` but like most of my comments, it's not very helpful. I could probably work through the problem again by just reverting my libraries, but it's not worth the effort. If you want to see the modified library in its entirety, you can find it [here](/markdown/projects/NuVinyl/SimpleMFRC522.py). 
+
+The other worker process is `screen.py`. It handles operations with the small OLED screen in the NuVinyl. It just exposes some simple functions that change the mode the screen is running in. This process runs asynchronously with the web server, so it can change to a "Now Playing" screen as soon as a user is authenticated. From there it can constantly update itself with the current song time, album, and title. I actually found a clever trick to get the current song time without sending hundreds of requests to the Spotify API every couple minutes:
+```python
+def run_screen(self):
+    lastUpdate = int(time.time())
+    duration = -1
+    progress = 1 
+    while self.isRunning:
+        if lastUpdate <= time.time() - 5 or progress >= duration:
+            try:
+                playback = self.spotify.current_playback()
+                playing = playback["item"]
+                song = playing["name"]
+                album = playing["album"]["name"]
+                duration = int(playing["duration_ms"] / 1000)
+                progress = int(playback["progress_ms"] / 1000)   
+            except:
+                song = "None"
+                album = "None"
+                duration = -1
+                progress = -2
+            lastUpdate = int(time.time())
+        #print(str(progress) + "/" + str(duration), flush=True)
+        self.clear()
+        self.draw.text((x, top),  "nuVinyl", font= self.font, fill=255)
+        self.draw.text((x, top+10), "Song: " + song, font = self.font, fill=255)
+        self.draw.text((x, top+20), "Album: " + album, font = self.font, fill=255)
+        self.draw.rectangle( ((x,top+30) , ((progress/duration)*128,top+32)) , fill=255)
+        self.display()
+        progress += 2
+        time.sleep(2)
+```
+This function runs the screen in "Now Playing" mode, where it displays the song and album, and a progress bar on the bottom. I had the thread loop until 5 seconds had passed, updating the progress bar in 2 second increments, giving it a smooth appearance for most songs. Once 5 seconds had passed, it would pull the currently playing information from Spotify, and synchronize the progress bar, title, and album accordingly. This way, I only query the Spotify API 20 times per minute, which sounds like a lot, but is well within their rate limit of 50 calls per minute. I could adjust it to use less API calls, but there's really no need as long as I'm within the rate limit and have enough throughput.
+
+The body itself was CNC machined from a model I designed, to give the device a sleek look, and allow it to be the background of a vinyl that would sit on it. I designed it with a groove that would fit both vinyls and CDs, and hold them at a slight angle, for a better display. Overall, I'm really happy with how the case turned out, and I'm glad it has a case. Having a case kind of finalizes a project, as if I'm happy enough with the current state that I can make it more difficult to modify in the future by encasing it in plastic.
+
+## Lessons Learned 
+> If Fatal, Upgrade a random card in your deck.
+
+The biggest problem with my execution of this project was my lack of experience finalizing projects. The case came together well, but putting the components in, I found that the tolerances I left myself to work with were the biggest problem. Most of the ports on the Raspberry Pi are inaccessible in the case, and the MFRC522 has difficulty sometimes reading through the thick plastic of the slope. Alongside that, I didn't anticipate the effect a closed case would have on the Wi-Fi adapter, which occasionally affects operation, but isn't a serious enough issue to impact the feel or usage of the device. If I were going to do it again, I would give it an external antenna, solder everything, and not start modifying libraries.
+
+The changes I made to `SimpleMFRC522.py` worked perfectly, and solved the problem exactly the way I need, but I realize now that doing that makes it harder to package projects, and I have no easy way to make this reproducible, short of including my fork of the entire library alongside this project, probably creating horrible dependency issues. I would absolutely find a different way to solve this problem now, going as far as trying other MFRC522 modules and other RFID tags to find a solution.
+
+Writing this now, I'm also realizing that this 3 module design is something I end up with a lot. The three modules in this case being the Flask Server, the `screen.py` process and the `reader.py` process. I tend to encounter a lot of problems with this design philosophy, such as having to pass one variable between the three, and having to either have everything interact with everything, or 2 things having to talk to each other through a main process, that's also trying to do things in the background. In this case, having to pass around the `spotify` variable, that held the context and functions for the Spotify API. When the Spotify authentication is completed, the Flask server has to start up the 2 worker processes, and ensure that they get `spotify`.  This is the code that handles that, by just checking a list of conditions and setting up anything that isn't set up.
+```python
+    if (spotify == None):
+        session['token'] = oauth.get_access_token(authCode)
+        spotify = spotipy.Spotify(auth=session.get('token').get('access_token'))
+        screen.start(spotify)
+    if (RFIDreader == None):
+        RFIDreader = reader.Reader(spotify)
+        print("Reader initialized")
+    if (not RFIDreader.running()):
+        print("Beginning background process...")
+        RFIDreader.readStart()
+```
+The biggest problem with the code is that this only gets checked with each request to the settings page, so if any of these components hit an error, the entire stack comes crumbling down. If spotify misses an auth token refresh, the screen won't be able to get the current playback time, and will go into a fail state. I should have built more resiliency into this program, and used proper asynchronous handling for the RFIDreader instead of the way I did it. It would still block one thread either way, but I feel like it wouldn't be as unresponsive using proper asynchronous handling. In conclusion, my unwillingness to redo anything in this project was probably my main takeaway, refactoring code is a great way to find new patterns and solutions you might not have seen before.

@@ -35,13 +35,12 @@
         flex-wrap: wrap;
         justify-content: space-between;
     }
-
 </style>
 <script>
     window.addEventListener("load", () => {
         getRecentPages("pages","cooking").then(() => {
             replaceIncludes();
-            setTimeout(() => {typingText(50)}, 400) 
+            setTimeout(() => {typingText(50)}, 150) 
         })
     });
 </script>

@@ -89,6 +89,18 @@
         display: block;
         margin: 0 auto;
     }
+    markdown a:visited {
+        color: var(--accent-dull);
+    }
+    markdown blockquote {
+        border-top: 1px solid var(--half-light);
+        border-bottom: 1px solid var(--half-light);
+        text-align: center;
+        font-style: italic;
+    }
+    markdown blockquote p {
+        font-family: 'Times New Roman', Times, serif !important;
+    }
     #accent {
         text-align: center;
         background-image: url('/assets/accents/polygon-scatter-haikei.svg');
@@ -202,7 +214,7 @@
         return vars;
     }
     window.addEventListener('DOMContentLoaded', () => {
-        //windowPath = "/cooking/SpicyMcCrispy"
+        if (window.location.hostname == "127.0.0.1") windowPath = "/projects/NuVinyl";
         loadPath(windowPath).then(() => {
             typingText(50)
             hljs.highlightAll()
