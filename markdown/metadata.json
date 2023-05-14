@@ -5,7 +5,12 @@
     "splashImage": "crispy.jpg",
     "createdDate": "2023-05-02"
   },
-  "markdown/projects/NuVinyl/markdown.tmd": {},
+  "markdown/projects/NuVinyl/markdown.tmd": {
+    "title": "NuVinyl",
+    "subTitle": "A new kind of record player",
+    "splashImage": "nuVinyl.jpg",
+    "createdDate": "2023-05-14"
+  },
   "markdown/projects/ThisDocument/markdown.tmd": {
     "title": "This.Document",
     "subTitle": "A Personal Github Pages site",
