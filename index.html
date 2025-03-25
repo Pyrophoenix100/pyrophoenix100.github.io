@@ -1,6 +1,7 @@
 <head>
     <title class="typed">Tuchscherer.Code()</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="alternate" type="application/rss+xml" title="Tuchscherer.Code()" href="https://pages.tuchscherer.xyz/feed.xml">
 </head>
 <body>
     <script src="/scripts/include.js"></script>
@@ -12,30 +13,21 @@
             <div class="column">
                 <h2 class="column-header typed">About Me</h2>
                 <p class="body-text">
-                    Hi! I'm Alec Tuchscherer, a student in the University of Wisconsin System, studying Computer
-                    Networking & Information Technologies. I have a lot of hobbies, and find more each year. My main
-                    hobby has been a persistent interest in computers, networking, and everything else to do with
-                    technology!
+                    Hi! I'm Alec Tuchscherer, a Computer Programmer / Sysadmin, I enjoy working with a lot of different technologies, and learning more about them. This blog (I guess) hosts different articles about different topics as I write them. I usually stay on the high abstraction layers of web-design and server-hosting, but I occasionally delve into hardware. I have a particular affinity for PHP, despite this page not being built on it, and I've been working with the wonders of React Native, which I will likely write an article about. You can see a good example of my articles below, detailing how this site was built.
                 </p>
-                <include src='assets/components/github-tag.html' vars="
-                repoName: Snippets;
-                repoPath: pyrophoenix100/pyrophoenix100.github.io;
-                repoDesc: My collection of snippets;"></include>
+                <include src="assets/components/mini-article-tag.html" vars="
+                    article: This.Document;
+                    path: projects/ThisDocument;"</include>
             </div>
             <div class="column">
                 <h2 class="column-header typed">What I'm Working On</h2>
                 <p class="body-text">
-                    This site currently, I hope to use it a lot in the future to document anything I may be doing or 
-                    working on. I'm also planning to add a lot of random content, so this will probably be a testbed
-                    for a few months. Hopefully this also acts as a showcase for some of my skills, and a repository 
+                    A few different maintenance projects, along with a React Native app. I'm also working on a professional site that will act as a hub for my professional projects, but I don't foresee releasing it anytime soon. This blog also acts as a showcase for some of my skills in base web programming / design; a repository 
                     of the site in it's current form is available here: <include src='assets/components/mini-github-tag.html' vars="
                     repoName: pyrophoenix100.github.io;
                     repoPath: Pyrophoenix100/pyrophoenix100.github.io;
                     light: true;"
                     outer='true'></include> 
-                    <include src="assets/components/mini-article-tag.html" vars="
-                    article: This.Document;
-                    path: projects/ThisDocument;"</include>
                 </p>
             </div>
             <div id="recent">
