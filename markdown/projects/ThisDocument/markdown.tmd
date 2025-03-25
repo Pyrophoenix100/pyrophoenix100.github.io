@@ -17,7 +17,8 @@ I specifically made the var tag whitespace insensitive to allow for multiline fo
 
 `{{ variable }}` replaces the tag with variables value in the metadata.
 
-`{? if variable ?} content {? else ?} elsecontent {? endif variable ?}` inserts content or elsecontent depending on if the variable is specified. Works before variable replacement, so it works as expected. 
+`{? if variable ?} content {? else ?} elsecontent {? endif variable ?}` inserts content or elsecontent depending on if the variable is specified. Works before variable replacement, so it works as expected.
+
 ```html
 <!--
     This is a miniature github tag, for use in text, takes the parameters:
