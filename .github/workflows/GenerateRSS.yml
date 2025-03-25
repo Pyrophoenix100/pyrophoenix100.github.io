@@ -1,4 +1,4 @@
-name: Generate RSS file
+name: Generate RSS feed
 on:
   push:
     paths: 
