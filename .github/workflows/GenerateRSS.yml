@@ -8,7 +8,7 @@ env:
   repoName: 'pyrophoenix100.github.io'
   rssPath: 'feed.xml'
 jobs:
-  update_metadata_index:
+  update_rss_feed:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -21,51 +21,50 @@ jobs:
         fileList="${fileList//$'\n'/'%0A'}"
         fileList="${fileList//$'\r'/'%0D'}"
         echo "files=$fileList" >> $GITHUB_OUTPUT
-    - name: Generate metadata index
+    - name: Generate RSS feed
       uses: actions/github-script@v5
       with:
         github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         script: |
-          const fs = require('fs');
-          const path = require('path');
-          const files = "${{ steps.files.outputs.files }}".split("%0A").map(f => f.trim()).filter(f => f !== "");
-          const INITIAL_RSS = '
-            <rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"version="2.0">
-              <channel>
-                <title>Tuchscherer.Code()</title>
-                <link>https://www.rssboard.org/</link>
-                <description></description>
-                <language>en-us</language>
-                <generator>TuchschererCode RSS Generator/1.0.0</generator>
-                <ttl>600</ttl>
-                <atom:link rel="self" href="https://pages.tuchscherer.xyz/" type="application/rss+xml"/>
-          ';
-          const END_RSS = '
-              </channel>
-             </rss>
-          ';
+          const fs = require("fs");
+          const path = require("path");
+          const files = "${{ steps.files.outputs.files }}"
+            .split("%0A")
+            .map((f) => f.trim())
+            .filter((f) => f !== "");
+          const INITIAL_RSS =
+            "<rss xmlns:dc='http://purl.org/dc/elements/1.1/' xmlns:atom='http://www.w3.org/2005/Atom'version='2.0'><channel><title>Tuchscherer.Code()</title><link>https://pages.tuchscherer.xyz/</link><description></description><language>en-us</language><generator>TuchschererCode RSS Generator/1.0.0</generator><lastBuildDate>" + (new Date).toUTCString() + "</lastBuildDate><ttl>600</ttl><atom:link rel='self' href='https://pages.tuchscherer.xyz/feed.xml' type='application/rss+xml'/>";
+          const END_RSS = "</channel></rss>";
           let rssOutput = INITIAL_RSS;
           for (let file of files) {
-            const content = fs.readFileSync(file, 'utf8');
+            const content = fs.readFileSync(file, "utf8");
+            // Get Metadata
             let [metadataText, articleContent] = content.split("### ENDMETADATA ###");
             let pairs = metadataText
-              .split(';')
-              .map(
-                pair => pair.trim()
-              )
-              .filter(
-                pair => pair != ""
-              );
-            let metadata = {};
-            pairs.forEach(pair => {
-                let [key, value] = pair.split(':').map(part => part.trim());
-                metadata[key] = value;
+              .split(";")
+              .map((pair) => pair.trim())
+              .filter((pair) => pair != "");
+              let metadata = {};
+            pairs.forEach((pair) => {
+              let [key, value] = pair.split(":").map((part) => part.trim());
+              metadata[key] = value;
             });
-            core.warning(metadata)
-            
+            // Get public link
+            let link = file.replace("markdown/", "").replace("/markdown.tmd", "");
+            let category = link.split("/")[0];
+            // Generate RSS
+            rssOutput += "<item>";
+            rssOutput += "<title>" + metadata.title + "</title>";
+            rssOutput += "<link>" + link + "</link>"; 
+            rssOutput += "<description>" + metadata.subTitle + "</description>";
+            rssOutput += "<author>alec@tuchscherer.xyz</author>";
+            rssOutput += "<category>" + category + "</category>";
+            rssOutput += "</item>";
+            core.warning(metadata);
           }
-          const rssFilePath = path.join(process.env.GITHUB_WORKSPACE, 'feed.xml');
-          fs.writeFileSync(rssFilePath, JSON.stringify(rssOutput, null, 2));
+          rssOutput += END_RSS;
+          const rssFilePath = path.join(process.env.GITHUB_WORKSPACE, "feed.xml");
+          fs.writeFileSync(rssFilePath, rssOutput);
     - name: Get SHA of File
       uses: actions/github-script@v4
       id: file-sha
