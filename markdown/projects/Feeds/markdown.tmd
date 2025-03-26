@@ -99,7 +99,7 @@ So now that we've seen the main underlying technology of RSS, we can look at wha
 ```
 
 I've removed some sections of this to make it a little easier to read visually, as there are a few attributes and text segments that are quite long. Other than those, the text it sends back is just as easy to read for humans as it is for computers. The `<rss>` tag just tells your web browser that this is a RSS feed, and tells it the version of RSS we'll be using. The `<channel>` tag represents one feed in the website, and I could have more if I had extra streams of information in my site. The `<channel>` tag contains some sub-tags that detail some information about the channel, and some data for the RSS feed. It also can contain any number of `<item>` tags, that detail one specific item in the feed, representing an article, podcast, or anything else you want. I use them to represent one of the articles on my page, so each one has a link to the page, and a listing of the category, so some RSS readers can organize them.
- 
+
 ## This Site
 
 > "Turns out coffee is the weird aunt of invention." - [Experimental Frenzy](https://scryfall.com/card/grn/99/experimental-frenzy)
@@ -134,7 +134,7 @@ let rssOutput = INITIAL_RSS;
 for (let file of files) {
     const content = fs.readFileSync(file, "utf8");
     // Get Metadata
-    let [metadataText, articleContent] = content.split("### ENDMETADATA ###");
+    let [metadataText, articleContent] = content.split("{...omitted...}");
     let pairs = metadataText
         .split(";")
         .map((pair) => pair.trim())

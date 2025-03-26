@@ -41,7 +41,7 @@ jobs:
           for (let file of files) {
             const content = fs.readFileSync(file, "utf8");
             // Get Metadata
-            let [metadataText, articleContent] = content.split({...omitted...});
+            let [metadataText, articleContent] = content.split("### ENDMETADATA ###");
             let pairs = metadataText
               .split(";")
               .map((pair) => pair.trim())
