@@ -54,10 +54,10 @@ jobs:
             // Get Splash
             // Get public link
             let link = file.replace("markdown/", "").replace("/markdown.tmd", "");
-            const splashImagePath = link + "/" + metadata.splashImage;
+            const splashImagePath = "${{ env.domain }}" + "/" + link + "/" + metadata.splashImage;
             let category = link.split("/")[0];
             // Generate RSS
-            let thumbnail = "<a href=\"" + link + "\" title=\"" + metadata.title + "\" rel=\"nofollow\"><img src=\"" + splashImagePath + "\" alt=\"" + metadata.title + "\" style=\"display: block; margin: auto; margin-bottom: 10px; max-width: 100%; object-fit: cover;\" loading=\"eager\"/></a>"
+            let thumbnail = "<a href=\"" + "${{ env.domain }}" + "/" + link + "\" title=\"" + metadata.title + "\" rel=\"nofollow\"><img src=\"" + splashImagePath + "\" alt=\"" + metadata.title + "\" style=\"display: block; margin: auto; margin-bottom: 10px; max-width: 100%; object-fit: cover;\" loading=\"eager\"/></a>"
             rssOutput += "<item>";
             rssOutput += "<title><![CDATA[" + metadata.title + "]]></title>";
             rssOutput += "<link>" + "${{ env.domain }}" + "/" + link + "</link>";
