@@ -13,11 +13,12 @@ If you see this icon on a site, you can probably add it to your RSS feeds in you
 
 ## Protocols
 
-Protocols are what keep the digital world running smoothly, and what allows you to access any web site, with (just about) any device, running (just about) any operating system, using (practically) any browser, in (almost) any country. A protocol is a set of rules called a "specification", and can even use other protocols to work. For example, most RSS feeds use [HTTP](https://en.wikipedia.org/wiki/HTTP) as their transport protocol, which usually uses [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) as it's transmission protocol. They stack upon each other like layers to create the systems we use in our daily lives. 
+Protocols are what keep the digital world running smoothly, and what allows you to access any web site, with (just about) any device, running (just about) any operating system, using (practically) any browser, in (almost) any country. A protocol is a set of rules called a "specification", and can even use other protocols to work. For example, most RSS feeds use [HTTP](https://en.wikipedia.org/wiki/HTTP) as their transport protocol, which usually uses [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) as it's transmission protocol. They stack upon each other like layers to create the systems we use in our daily lives.
 
 ## XML
 
 The RSS protocol is actually fairly simple, and the [documentation](https://www.rssboard.org) and [specification](https://www.rssboard.org/rss-specification) are both available online. The protocol uses XML (eXtensible Markup Language) to represent it's data, which is a format that uses tags and attributes to represent trees of data. It sounds complex, but it's easy to read and write.
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This is a comment! They provide some information for humans to read, and aren't normally read by the computer -->
