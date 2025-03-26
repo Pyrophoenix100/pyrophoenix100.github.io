@@ -1,7 +1,7 @@
 title: GenChat;
 subTitle: The void, into which you may scream;
 splashImage: splash.png;
-createdDate: 2025-3-10;
+createdDate: 2025-03-10;
 ### ENDMETADATA ###
 
 # GenChat
@@ -75,6 +75,8 @@ round of the game, despite being in the chat every time I pop in.
 BSlow is by far the most noisy chatter at the time, sending message almost all hours they're active, and sending
 messages every couple seconds. There's no indication that they've been in a game in the past week, although
 I've seen testimonies that they do play, just an entirely offline mode.
+<div style="display: flex; gap: 1em" markdown>
+<p style="flex:1" markdown>
 
 ![A screenshot of a testimony about BSlow. I would have captured his profile, but he's just been banned again, amazingly.](/markdown/writing/GenChat/alive.png)
 
@@ -88,7 +90,13 @@ Either way, they're usually saying nonsense.
 (I do realize that DLowAlt, who is also another prominent figure in all of this at the moment, is likely another account of BSlow's,
 but I wasn't able to confirm this, so it's just conjecture)
 
+</p>
+<p style="flex: 1" markdown>
+
 ![More chatter, for your amusement](/markdown/writing/GenChat/image.png)
+
+</p>
+</div>
 
 # Theories
 

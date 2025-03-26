@@ -1,0 +1,165 @@
+title: Feeds;
+subTitle: A return to tradition;
+splashImage: splash.png;
+createdDate: 2025-03-25;
+### ENDMETADATA ###
+
+# RSS Feeds
+
+[RSS](https://en.wikipedia.org/wiki/RSS) (Really Simple Syndication) (Yes really, that's what the acronym stands for) is a protocol designed to allow a website to provide a feed of content that can be read from a number of different programs, allowing you to collect RSS feeds into your own personal feed of news. It isn't actually a program itself, just a set of rules for how data should be ordered to represent a feed. These rules allow any website using any tool to generate an RSS feed should be usable with any program that can read them. Speaking of, your web browser can likely read RSS feeds. You can test it by clicking [this link](https://pages.tuchscherer.xyz/feed.xml), it will bring you to the RSS feed for this site. If it brings you to a wall of text or tries to download a file, your browser probably doesn't support RSS feeds. If it works, you should see a listing of some of the other articles on this site!
+
+![The RSS Icon](/markdown/projects/Feeds/rss.png  =100x100)
+If you see this icon on a site, you can probably add it to your RSS feeds in your RSS feed client, letting you see any feed posts from that site. For example, [The Onion](https://theonion.com/feed/) also has a RSS feed, which lists out all the satirical articles from them. There are tons of other sites that have RSS feeds, and some that use them in more interesting ways. A podcast, such as [the Last Podcast on the Left](https://www.lastpodcastontheleft.com), can make use of a part of the RSS specification called the `<enclosure>` tag to automatically download relevant media when the feed is refreshed, so you can enjoy your podcast without it buffering! However, it's all up to the specific product that implements the protocol (or the "implementation") to make use of these features. Chrome and Firefox are both web browsers, but they have different features if you look close enough, just like most implementations of a protocol. There's even a specific document that details certain language to denote how important a feature is to the specification, called [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
+
+## Protocols
+
+Protocols are what keep the digital world running smoothly, and what allows you to access any web site, with (just about) any device, running (just about) any operating system, using (practically) any browser, in (almost) any country. A protocol is a set of rules called a "specification", and can even use other protocols to work. For example, most RSS feeds use [HTTP](https://en.wikipedia.org/wiki/HTTP) as their transport protocol, which usually uses [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) as it's transmission protocol. They stack upon each other like layers to create the systems we use in our daily lives. 
+
+## XML
+
+The RSS protocol is actually fairly simple, and the [documentation](https://www.rssboard.org) and [specification](https://www.rssboard.org/rss-specification) are both available online. The protocol uses XML (eXtensible Markup Language) to represent it's data, which is a format that uses tags and attributes to represent trees of data. It sounds complex, but it's easy to read and write.
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is a comment! They provide some information for humans to read, and aren't normally read by the computer -->
+<tag>
+    <innerTag>
+        <selfClosingTag />
+        <tagWithAttributes anAttribute="A value!" orUseNumbers="10" />
+        <text>
+            Tags can also have text in them
+        </text>
+        <text>
+            And tag names can absolutely be repeated!
+        </text>
+        <text>Formatting isn't that important either, you could take out all the spaces outside a pair of <>, and it would still work fine</text>
+        <text 
+            note="For non-self-closing tags, the attributes go on the open tag"
+            note2="But, you can't have the same attribute name on the same tag"
+            note3="These tags can be empty, but some implementations don't like that"
+        ></text>
+    </innerTag>
+    <closingRemarks>
+        As you can see, there's a lot you can do with XML, 
+        and this is only a quick overview of the most common
+        features.
+    </closingRemarks>
+</tag>
+```
+This is a sample of just XML. You can call the tags whatever you'd like, and do the same with the attributes. XML itself just dictates the format of these tags, and how they should stack together. It's up to the program using that protocol to care about what tags are there, what attributes they have, and what they mean. This particular bit of XML doesn't mean anything special to any computer program (although it is valid HTML, meaning it can be displayed as a web page), as it is, it's just a way to store this data in a hierarchical format. You might be able to press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd> to get another example of the use of XML.
+
+![inspectElement](/markdown/projects/Feeds/InspectElement.png)
+
+This is an example of HTML, another language that uses XML, like you would see if you pressed <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd> to open your browser's inspect element view. HTML is used along with CSS and JS to build webpages like this one. You can see all the same general syntax of XML, it has the same `<tag attributes="value">` format as regular XML, but now there's a huge list of rules on top of that. `<p>` is a paragraph, like the text you're reading right now, `<div>` is used to indicate a block of context that can have other tags inside it, and can have styles, scripts, and data associated with it. `<img>` is an image, `<a>` is a link, used to link to the url in the `href` attribute. There's a [lot of them](https://developer.mozilla.org/en-US/docs/Web/HTML/Element), and even if you are familiar with HTML, I would recommend giving that a look, there are a lot of interesting tags that you might not be familiar with.
+
+## How it Works
+
+So now that we've seen the main underlying technology of RSS, we can look at what a RSS feed looks like in practice. When you go to [this link](https://pages.tuchscherer.xyz/feed.xml), your web browser sends a request to my server (or [Github](https://github.com)'s, which is hosting this site right now). My server just responds with a text file, that your browser reads, that looks something like this:
+
+```rss
+<rss version='2.0'>
+    <channel>
+        <title>Tuchscherer.Code()</title>
+        <link>https://pages.tuchscherer.xyz/</link>
+        <description>A collections of personal projects, writings, and recipes</description>
+        <language>en-us</language>
+        <generator>TuchschererCode RSS Generator/1.0.0</generator>
+        <lastBuildDate>Tue, 25 Mar 2025 11:36:19 GMT</lastBuildDate>
+        <ttl>600</ttl>
+        <item>
+            <title>GenChat</title>
+            <link>https://pages.tuchscherer.xyz/writing/GenChat</link>
+            <description>The void, into which you may scream</description>
+            <author>alec@tuchscherer.xyz</author>
+            <category>writing</category>
+        </item>
+        <item>
+            <title>Spicy McCrispy</title>
+            <link>https://pages.tuchscherer.xyz/cooking/SpicyMcCrispy</link>
+            <description>Recipe Replication</description>
+            <author>alec@tuchscherer.xyz</author>
+            <category>cooking</category>
+        </item>
+        <item>
+            <title>NuVinyl</title>
+            <link>https://pages.tuchscherer.xyz/projects/NuVinyl</link>
+            <description>A new kind of record player</description>
+            <author>alec@tuchscherer.xyz</author>
+            <category>projects</category>
+        </item>
+        <item>
+            <title>This.Document</title>
+            <link>https://pages.tuchscherer.xyz/projects/ThisDocument</link>
+            <description>A Personal Github Pages site</description>
+            <author>alec@tuchscherer.xyz</author>
+            <category>projects</category>
+        </item>
+    </channel>
+</rss>
+
+```
+
+I've removed some sections of this to make it a little easier to read visually, as there are a few attributes and text segments that are quite long. Other than those, the text it sends back is just as easy to read for humans as it is for computers. The `<rss>` tag just tells your web browser that this is a RSS feed, and tells it the version of RSS we'll be using. The `<channel>` tag represents one feed in the website, and I could have more if I had extra streams of information in my site. The `<channel>` tag contains some sub-tags that detail some information about the channel, and some data for the RSS feed. It also can contain any number of `<item>` tags, that detail one specific item in the feed, representing an article, podcast, or anything else you want. I use them to represent one of the articles on my page, so each one has a link to the page, and a listing of the category, so some RSS readers can organize them. 
+## This Site
+
+> "Turns out coffee is the weird aunt of invention." - [Experimental Frenzy](https://scryfall.com/card/grn/99/experimental-frenzy)
+
+Clearly, this site supports an RSS feed. This site's RSS is just a simple file hosted on Github's servers, accessible at [this URL](https://pages.tuchscherer.xyz/feed.xml). The file gets updated every time I make a change to one of the articles, and the next time your RSS reader gets the file, it'll see the new articles. It's all run off a Github actions script, so whenever code is pushed to the Github repository, it'll grab the metadata off all the articles and use it to generate a RSS file. The `<![CDATA[ ]]>` tags are just to denote that anything inside should be handled as just text, and have no other meaning to the RSS parser. They can actually contain HTML, since most RSS readers also read HTML and display it.
+
+```js
+const fs = require("fs");
+const path = require("path");
+const files = "${{ steps.files.outputs.files }}"
+    .split("%0A")
+    .map((f) => f.trim())
+    .filter((f) => f !== "");
+const INITIAL_RSS = 
+    "<rss xmlns:atom='http://www.w3.org/2005/Atom' version='2.0'>" +
+        "<channel>" + 
+            "<title>" +
+                "Tuchscherer.Code()" +
+            "</title>" + 
+            "<link>${{ env.domain }}/</link>" + 
+            "<description>" + 
+                "A collections of personal projects, writings, and recipes" + 
+            "</description>" + 
+            "<language>en-us</language>" + 
+            "<generator>TuchschererCode RSS Generator/1.0.0</generator>" + 
+            "<docs>https://www.rssboard.org/rss-specification</docs>" + 
+            "<lastBuildDate>" + new Date().toUTCString() + "</lastBuildDate>" + 
+            "<ttl>600</ttl>" + 
+            "<atom:link rel='self' href='${{ env.domain }}/feed.xml' type='application/rss+xml'/>";
+const END_RSS = "</channel></rss>";
+let rssOutput = INITIAL_RSS;
+for (let file of files) {
+    const content = fs.readFileSync(file, "utf8");
+    // Get Metadata
+    let [metadataText, articleContent] = content.split("### ENDMETADATA ###");
+    let pairs = metadataText
+        .split(";")
+        .map((pair) => pair.trim())
+        .filter((pair) => pair != "");
+    let metadata = {};
+    pairs.forEach((pair) => {
+        let [key, value] = pair.split(":").map((part) => part.trim());
+        metadata[key] = value;
+    });
+    // Get Splash
+    let link = file.replace("markdown/", "").replace("/markdown.tmd", "");
+    const splashImagePath = link + "/" + metadata.splashImage;
+    let category = link.split("/")[0];
+    // Generate RSS
+    let thumbnail = {...Omitted Thumbnail HTML...}
+    rssOutput += "<item>";
+    rssOutput += "<title><![CDATA[" + metadata.title + "]]></title>";
+    rssOutput += "<link>" + "${{ env.domain }}" + "/" + link + "</link>";
+    rssOutput += "<description><![CDATA[" + thumbnail + metadata.subTitle + "]]></description>";
+    rssOutput += "<author><![CDATA[alec@tuchscherer.xyz]]></author>";
+    rssOutput += "<category><![CDATA[" + category + "]]></category>";
+    rssOutput += "<pubDate>" + new Date(metadata.createdDate).toUTCString() + "</pubDate>";
+    rssOutput += "</item>";
+    core.warning(metadata);
+}
+rssOutput += END_RSS;
+const rssFilePath = path.join(process.env.GITHUB_WORKSPACE, "feed.xml");
+fs.writeFileSync(rssFilePath, rssOutput);
+```

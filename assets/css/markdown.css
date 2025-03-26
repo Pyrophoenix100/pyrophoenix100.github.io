@@ -1,0 +1,72 @@
+markdown {
+    width: 90%;
+    margin: 2%;
+    color: var(--quarter-light) !important;
+    margin-top: 0px;
+}
+markdown li {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5;
+    margin-top: 0.5rem;
+}
+markdown img {
+    max-width: 100% !important;
+    min-width: 10px;
+    width: auto;
+    margin-right: auto;
+}
+markdown h1 {
+    margin-left: 0em;
+    text-align: left;
+}
+markdown h2 {
+    margin-left: 1em !important;
+    text-align: left;
+}
+markdown h3 {
+    margin-left: 2.5em !important;
+}
+markdown h1~* {
+    margin-left: 1em;
+}
+markdown h2~* {
+    margin-left: 2.5em;
+}
+markdown h3~* {
+    margin-left: 4em;
+}
+markdown p {
+    line-height: 2em;
+}
+markdown code { 
+    background-color: #1a1b26;
+    padding: 0.2em;
+    border-radius: 0.2em;
+}
+markdown table {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--quarter-light)
+}
+markdown table td {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+markdown thead th {
+    border-bottom: 1px solid;
+}
+markdown iframe { 
+    display: block;
+    margin: 0 auto;
+}
+markdown a:visited {
+    color: var(--accent-dull);
+}
+markdown blockquote {
+    border-top: 1px solid var(--half-light);
+    border-bottom: 1px solid var(--half-light);
+    text-align: center;
+    font-style: italic;
+}
+markdown blockquote p {
+    font-family: 'Times New Roman', Times, serif !important;
+}
