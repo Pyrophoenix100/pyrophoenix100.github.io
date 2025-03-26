@@ -121,7 +121,7 @@ const INITIAL_RSS =
             "</title>" + 
             "<link>${{ env.domain }}/</link>" + 
             "<description>" + 
-                "A collections of personal projects, writings, and recipes" + 
+                "A collection of personal projects, writings, and recipes" + 
             "</description>" + 
             "<language>en-us</language>" + 
             "<generator>TuchschererCode RSS Generator/1.0.0</generator>" + 
