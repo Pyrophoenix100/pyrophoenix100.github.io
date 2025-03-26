@@ -3,13 +3,19 @@
     "title": "GenChat",
     "subTitle": "The void, into which you may scream",
     "splashImage": "splash.png",
-    "createdDate": "2025-3-10"
+    "createdDate": "2025-03-10"
   },
   "markdown/cooking/SpicyMcCrispy/markdown.tmd": {
     "title": "Spicy McCrispy",
     "subTitle": "Recipe Replication",
     "splashImage": "crispy.jpg",
     "createdDate": "2023-05-02"
+  },
+  "markdown/projects/Feeds/markdown.tmd": {
+    "title": "Feeds",
+    "subTitle": "A return to tradition",
+    "splashImage": "splash.png",
+    "createdDate": "2025-03-25"
   },
   "markdown/projects/NuVinyl/markdown.tmd": {
     "title": "NuVinyl",
