@@ -104,7 +104,7 @@ I've removed some sections of this to make it a little easier to read visually, 
 
 > "Turns out coffee is the weird aunt of invention." - [Experimental Frenzy](https://scryfall.com/card/grn/99/experimental-frenzy)
 
-Clearly, this site supports an RSS feed. This site's RSS is just a simple file hosted on Github's servers, accessible at [this URL](https://pages.tuchscherer.xyz/feed.xml). The file gets updated every time I make a change to one of the articles, and the next time your RSS reader gets the file, it'll see the new articles. It's all run off a Github actions script, so whenever code is pushed to the Github repository, it'll grab the metadata off all the articles and use it to generate a RSS file. The `<![CDATA[ ]]>` tags are just to denote that anything inside should be handled as just text, and have no other meaning to the RSS parser. They can actually contain HTML, since most RSS readers also read HTML and display it.
+Clearly, this site supports an RSS feed. This site's RSS is just a simple file hosted on Github's servers, accessible at [this URL](https://pages.tuchscherer.xyz/feed.xml). The file gets updated every time I make a change to one of the articles, and the next time your RSS reader gets the file, it'll see the new articles. It's all run off a Github actions script, so whenever code is pushed to the Github repository, it'll grab the metadata off all the articles and use it to generate a RSS file. The `<![CDATA[ ]]>` tags are just to denote that anything inside should be handled as just text, and have no other meaning to the RSS parser. They can actually contain HTML, since most RSS readers also read HTML and display it. This is the complete Javascript script that handles this process.
 
 ```js
 const fs = require("fs");
@@ -151,12 +151,12 @@ for (let file of files) {
     // Generate RSS
     let thumbnail = {...Omitted Thumbnail HTML...}
     rssOutput += "<item>";
-    rssOutput += "<title><![CDATA[" + metadata.title + "]]></title>";
-    rssOutput += "<link>" + "${{ env.domain }}" + "/" + link + "</link>";
-    rssOutput += "<description><![CDATA[" + thumbnail + metadata.subTitle + "]]></description>";
-    rssOutput += "<author><![CDATA[alec@tuchscherer.xyz]]></author>";
-    rssOutput += "<category><![CDATA[" + category + "]]></category>";
-    rssOutput += "<pubDate>" + new Date(metadata.createdDate).toUTCString() + "</pubDate>";
+    rssOutput +=    "<title><![CDATA[" + metadata.title + "]]></title>";
+    rssOutput +=    "<link>" + "${{ env.domain }}" + "/" + link + "</link>";
+    rssOutput +=    "<description><![CDATA[" + thumbnail + metadata.subTitle + "]]></description>";
+    rssOutput +=    "<author><![CDATA[alec@tuchscherer.xyz]]></author>";
+    rssOutput +=    "<category><![CDATA[" + category + "]]></category>";
+    rssOutput +=    "<pubDate>" + new Date(metadata.createdDate).toUTCString() + "</pubDate>";
     rssOutput += "</item>";
     core.warning(metadata);
 }
