@@ -57,7 +57,7 @@ jobs:
             const splashImagePath = "${{ env.domain }}" + "/markdown/" + link + "/" + metadata.splashImage;
             let category = link.split("/")[0];
             // Generate RSS
-            let thumbnail = "<a href=\"" + "${{ env.domain }}" + link + "\" title=\"" + metadata.title + "\" rel=\"nofollow\"><img src=\"" + splashImagePath + "\" alt=\"" + metadata.title + "\" style=\"display: block; margin: auto; margin-bottom: 10px; max-width: 100%; object-fit: cover;\" loading=\"eager\"/></a>"
+            let thumbnail = "<a href=\"" + "${{ env.domain }}" + link + "\" title=\"" + metadata.title + "\" rel=\"nofollow\"><img src=\"" + splashImagePath + "\" alt=\"" + metadata.title + "\" style=\"display: block; margin: auto; margin-bottom: 10px; max-width: 100%; object-fit: cover;\" loading=\"eager\"/></a><br />"
             rssOutput += "<item>";
             rssOutput += "<title><![CDATA[" + metadata.title + "]]></title>";
             rssOutput += "<link>" + "${{ env.domain }}" + "/" + link + "</link>";
