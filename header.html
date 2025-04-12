@@ -2,7 +2,7 @@
 <script src="scripts/bits.js"></script>
 <div>
 <div id='header'>
-    <p id="header-text" class="typed" onclick="window.location.href = '/'">Tuchscherer.Code()</p>
+    <div class="site-nav-menu typed">Tuchscherer.Code(<span class='other-sites'><a class="other-site" style="color: #81DBD6" href="https://work.tuchscherer.xyz">Work</a>|<a class="other-site" style="color: #A981DB" href="https://pages.tuchscherer.xyz">Pages</a>|<a class="other-site" style="color: #B3DB81" href="https://notes.tuchscherer.xyz">Notes</a></span>)</div>
     <ul id="header-menu">
         <li id="projects" class="header-menu-item" onclick="window.location.href = '/markdown/projects/projects.html'">
             <img class="header-menu-item-icon" src="/assets/logos/laptop-code.svg"></img>
@@ -25,11 +25,67 @@
     *[onclick] {
         cursor: pointer;
     }
+    html {
+        /* Colors */
+        --box-shadow: #202020;
+        --dark: #2E2E2E;
+        --half-dark: #3f3f3f;
+        --quarter-dark: #4b4a4d;
+        --accent-dull: #7a50ad;
+        --accent-light: #a981db;
+        --quarter-light: #8e8992;
+        --half-light: #a9a3ad;
+        --light: #d0cad4;
+
+        /* Font Size */
+        --regular-text: 14px;
+        --header-text: 20px;
+        overflow-x: hidden;
+    }
     #header-menu {
         list-style-type: none;
         margin: 0;
         padding: 0;
     }
+
+    /* Site Nav */
+    .site-nav-menu {
+        background-color: #555;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: var(--header-text);
+        font-family: 'Consolas', 'Lucida Console';
+        color: var(--light);
+    }
+    
+    .site-nav-menu > .other-sites {
+        display: inline-block;
+    }
+    .site-nav-menu > .other-sites {
+        display: inline-block;
+        max-width: 0px;
+        opacity: 0;
+        visibility: hidden;
+        white-space: nowrap;
+        transition: max-width 0.3s ease 0.3s, opacity 0.3s ease;
+    }
+    
+    .site-nav-menu:hover > .other-sites  {
+        max-width: 500px;
+        visibility: visible;
+        opacity: 100;
+        transition: max-width 0.3s ease, opacity 0.3s ease 0.3s;
+    }
+    .other-site {
+        font-size: var(--header-text);
+        padding: 0px 10px;
+        font-family: 'Consolas', 'Lucida Console';
+        text-decoration: none;
+    }
+    .other-site:hover {
+        text-decoration: underline;
+    }
+
     .header-menu-item {
         background-color: var(--half-dark);
         padding: 5px;
@@ -64,18 +120,7 @@
         src: url('/assets/logos/laptop-code-nohover.svg');
     } 
 
-    html {
-        --box-shadow: #202020;
-        --dark: #2E2E2E;
-        --half-dark: #3f3f3f;
-        --quarter-dark: #4b4a4d;
-        --accent-dull: #7a50ad;
-        --accent-light: #a981db;
-        --quarter-light: #8e8992;
-        --half-light: #a9a3ad;
-        --light: #d0cad4;
-        overflow-x: hidden;
-    }
+
     p, a {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
